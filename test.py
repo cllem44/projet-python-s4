@@ -1,2 +1,0 @@
-"ddsds"
-print("hello world")
