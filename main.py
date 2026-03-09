@@ -8,10 +8,11 @@ debut_x = 0
 debut_y = 0
 
 def eteindretelephone():
-    canvas_éteint.pack(fill="both", expand=True)
+    frame_eteint.pack()
 
 def ecranaccueil():
-    canvas_éteint.pack_forget()
+    frame_eteint.pack_forget()
+    frame_ecran1.pack()
 
 def debutswipe(event):
     global debut_x, debut_y
@@ -57,7 +58,9 @@ frame_barre = Frame(app, height=60, bg="#c1c1c1")
 frame_barre.pack(fill="x", side="bottom")
 
 #tkinter
-canvas_éteint = Canvas(frame_ecran1, bg="black") 
+#canvas_éteint = Canvas(frame_ecran1, bg="black") 
+frame_eteint = Frame(app,bg="#1c70e5")
+
 
 #fill="both" : prend largeur + hauteur
 #expand=True : utilise tout l’espace disponible
