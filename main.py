@@ -2,7 +2,7 @@ import customtkinter as ctk
 from tkinter import *
 from img import *
 from PIL import ImageTk,Image
-from Frames import creer_frames
+from Frame_ecranprincipal import *
 # Faire 1 frame par app a chaque fois 
 
 debut_x = 0
@@ -60,23 +60,8 @@ app.grid_columnconfigure(0, weight=1)
 
 # FRAMES 
 frame_ecran1, frame_ecran2, frame_verrouille, frame_barre = creer_frames(app)
+frames = [frame_ecran1, frame_ecran2, frame_verrouille, frame_barre]
+setup_frames(frames,debutswipe,finswipe,eteindretelephone,diminuerson,augmenterson,ecranaccueil)
 afficher_ecran(frame_ecran1)
-#tkinter
 
-
-#fill="both" : prend largeur + hauteur
-#expand=True : utilise tout l’espace disponible
-
-frame_ecran1.bind("<ButtonPress-1>", debutswipe)
-frame_ecran1.bind("<ButtonRelease-1>", finswipe)
-frame_ecran2.bind("<ButtonPress-1>", debutswipe)
-frame_ecran2.bind("<ButtonRelease-1>", finswipe)
-buttoneteindre = ctk.CTkButton(master=frame_barre,text="Eteindre",command=eteindretelephone,width=80,height=40,border_width=0,corner_radius=4,hover=False)
-buttoneteindre.pack(side="bottom")
-buttondiminuer = ctk.CTkButton(master=frame_barre,text="",command=diminuerson,width=60,height=10,border_width=0,corner_radius=5,hover=False)
-buttondiminuer.pack(side="left",padx = 35)
-buttonprincipale = ctk.CTkButton(master=frame_barre,text="",command=ecranaccueil,width=55,height=55,border_width=0,corner_radius=30,hover=False)
-buttonprincipale.pack(side="left",padx = 42)
-buttonaugmenter = ctk.CTkButton(master=frame_barre,text="",command=augmenterson,width=60,height=60,border_width=0,corner_radius=0,hover=False)
-buttonaugmenter.pack(side="left",padx = 35)
 app.mainloop()
