@@ -7,12 +7,16 @@ from img import *
 debut_x = 0
 debut_y = 0
 
+def afficher_ecran(frame):
+    for f in (frame_ecran1, frame_ecran2, frame_verrouille):
+        f.grid_remove()
+    frame.grid()
+
 def eteindretelephone():
-    frame_eteint.pack()
+    afficher_ecran(frame_verrouille)
 
 def ecranaccueil():
-    frame_eteint.pack_forget()
-    frame_ecran1.pack()
+    afficher_ecran(frame_ecran1)
 
 def debutswipe(event):
     global debut_x, debut_y
@@ -23,12 +27,10 @@ def finswipe(event):
     dx = event.x - debut_x
     dy = event.y - debut_y
     if abs(dx) > abs(dy):
-        if dx > 20:
-            frame_ecran1.pack_forget()
-            frame_ecran2.pack(fill="both", expand=True)
-        elif dx < -20:
-            frame_ecran2.pack_forget()
-            frame_ecran1.pack(fill="both", expand=True)
+        if dx < 20:
+            afficher_ecran(frame_ecran2)
+        elif dx > -20:
+            afficher_ecran(frame_ecran1)
 
 # Si on veut faire un menu déroulant ou quelques choses du style vers le bas ou le haut 
             """
@@ -51,12 +53,21 @@ app.title("Prototype")
 app.geometry("400x700")
 app.iconbitmap("img/logo.ico")
 app.resizable(width=False,height=False)
-frame_ecran1 = Frame(app)
-frame_ecran1.pack(fill="both", expand=True)
-frame_ecran2 = Frame(app,bg="#FD0000")
-frame_barre = Frame(app, height=60, bg="#c1c1c1")
-frame_barre.pack(fill="x", side="bottom")
+app.grid_rowconfigure(0, weight=1)  # écran principal
+app.grid_rowconfigure(1, weight=0)  # barre du bas
+app.grid_columnconfigure(0, weight=1)
 
+frame_ecran1 = Frame(app)
+frame_ecran1.grid(row=0, column=0, sticky="nsew")
+frame_ecran2 = Frame(app, bg="#FD0000")
+frame_ecran2.grid(row=0, column=0, sticky="nsew")
+frame_ecran2.grid_remove()
+frame_verrouille = Frame(app, bg="black")
+frame_verrouille.grid(row=0, column=0, sticky="nsew")
+frame_barre = Frame(app, height=60, bg="#c1c1c1")
+frame_barre.grid(row=1, column=0, sticky="ew")
+frame_barre.grid_propagate(False)
+afficher_ecran(frame_ecran1)
 #tkinter
 #canvas_éteint = Canvas(frame_ecran1, bg="black") 
 frame_eteint = Frame(app,bg="#1c70e5")
