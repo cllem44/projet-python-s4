@@ -49,33 +49,33 @@ def API_meteo_test():
     
 
 def afficher_valeur():
-    # 1. On récupère la valeur du champ
-    valeur_saisie = Ville.get() 
-    
-    # 2. On modifie le texte du Label qui se trouve dans la Frame
-    affiche_ville.config(ville=f" {valeur_saisie}")
+    valeur_saisie = ville_champ.get()     
+    affiche_ville.config(text=f" {valeur_saisie}")
 
 #customtkinter
 app = ctk.CTk()
 app.title("Prototype")
 app.geometry("400x700")
 app.iconbitmap("img/logo.ico")
+
 app.resizable(width=False,height=False)
 app.grid_rowconfigure(0, weight=1)  # écran principal
 app.grid_rowconfigure(1, weight=0)  # barre du bas
 app.grid_columnconfigure(0, weight=1)    
 
-frame_meteo = Frame(app)
+frame_meteo = Frame(app,background="#2eafff")
+
+frame_meteo.grid(row=0, column=0, sticky="nsew")
 
 ville="Angers"
-affiche_ville = Label( text = ville, fg='#FFFFFF', bg='#3396ff')
-affiche_ville.grid(column=0,row=0,sticky="n",pady=6)
+affiche_ville = Label(master=frame_meteo, text = ville, fg="#000000",bg="#2eafff",font=("Arial",10),justify=CENTER)
+affiche_ville.grid(column=0,row=0,sticky="n")
 
-Ville= Entry( bg="white", font="Courier", bd=5, justify=CENTER, textvariable =ville)
-Ville.grid(column=0,row=1 ,sticky="n",pady=6)
+ville_champ= Entry(master=frame_meteo, bg="white", font="Courier", textvariable =ville)
+ville_champ.grid(column=0,row=1 ,sticky="n" )
 
-bouton_valider = Button( text="Valider", command=afficher_valeur)
-bouton_valider.grid(column=0,row=2 ,sticky="n",pady=6)
+bouton_valider = Button(master=frame_meteo, text="Valider", command=afficher_valeur)
+bouton_valider.grid(column=0,row=2 ,sticky="n")
 
 
 app.mainloop()
