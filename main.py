@@ -2,7 +2,8 @@ import customtkinter as ctk
 from img import *
 import PIL.Image as PilImage
 from Frame_ecranprincipal import *
-# Faire 1 frame par app a chaque fois 
+from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
+from comtypes import CLSCTX_ALL
 
 debut_x = 0
 debut_y = 0
@@ -41,11 +42,19 @@ def finswipe(event):
             #Swipe haut
 """
 
+devices = AudioUtilities.GetSpeakers()
+interface = devices._dev.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
+volume = interface.QueryInterface(IAudioEndpointVolume)
+
 def diminuerson():
-    pass
+    current = volume.GetMasterVolumeLevelScalar()  
+    new = max(0.0, current - 0.05)  
+    volume.SetMasterVolumeLevelScalar(new, None)
 
 def augmenterson():
-    pass
+    current = volume.GetMasterVolumeLevelScalar()
+    new = min(1.0, current + 0.05) 
+    volume.SetMasterVolumeLevelScalar(new, None)
 
 def setup_fond(frame, chemin):
     image_pil = PilImage.open(chemin)
