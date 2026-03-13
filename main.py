@@ -1,7 +1,8 @@
 import customtkinter as ctk
 from tkinter import *
 from img import *
-# Faire que lorsque qu'on appuie une première fois sur le bouton quitter, ça éteigne l'ecran en affichant un ecran noir surement avec ctk.set_appearance_mode("dark") comme commande
+from PIL import ImageTk,Image
+from Frames import creer_frames
 # Faire 1 frame par app a chaque fois 
 
 debut_x = 0
@@ -57,19 +58,11 @@ app.grid_rowconfigure(0, weight=1)  # écran principal
 app.grid_rowconfigure(1, weight=0)  # barre du bas
 app.grid_columnconfigure(0, weight=1)
 
-frame_ecran1 = Frame(app)
-frame_ecran1.grid(row=0, column=0, sticky="nsew")
-frame_ecran2 = Frame(app, bg="#FD0000")
-frame_ecran2.grid(row=0, column=0, sticky="nsew")
-frame_ecran2.grid_remove()
-frame_verrouille = Frame(app, bg="black")
-frame_verrouille.grid(row=0, column=0, sticky="nsew")
-frame_barre = Frame(app, height=60, bg="#c1c1c1")
-frame_barre.grid(row=1, column=0, sticky="ew")
-frame_barre.grid_propagate(False)
+# FRAMES 
+frame_ecran1, frame_ecran2, frame_verrouille, frame_barre = creer_frames(app)
 afficher_ecran(frame_ecran1)
 #tkinter
-canvas_éteint = Canvas(frame_ecran1, bg="black") 
+
 
 #fill="both" : prend largeur + hauteur
 #expand=True : utilise tout l’espace disponible
