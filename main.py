@@ -69,7 +69,9 @@ frame_barre.grid(row=1, column=0, sticky="ew")
 frame_barre.grid_propagate(False)
 afficher_ecran(frame_ecran1)
 #tkinter
-canvas_éteint = Canvas(frame_ecran1, bg="black") 
+#canvas_éteint = Canvas(frame_ecran1, bg="black") 
+frame_eteint = Frame(app,bg="#1c70e5")
+
 
 #fill="both" : prend largeur + hauteur
 #expand=True : utilise tout l’espace disponible
