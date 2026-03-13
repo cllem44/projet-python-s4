@@ -10,18 +10,18 @@ def chat_messages(own_id):
 
 @ui.page('/')
 def index():
-    ui.add_css('body {background-color: red;}')
+    ui.add_css('body {background-color: blue ;}')
     def send():
         messages.append((user, avatar, text.value))
         chat_messages.refresh()
         text.value = ''
 
     user = str(uuid4())
-    avatar = "https://img.freepik.com/psd-gratuit/illustration-realiste-voiture_23-2151227624.jpg?semt=ais_hybrid&w=740&q=80"
+    avatar = "https://randomwordgenerator.com/picture.php"
     with ui.column().classes('w-full items-stretch'):
         chat_messages(user)
 
-    with ui.footer().classes('bg = red'):
+    with ui.footer().classes('bg = light blue'):
         with ui.row().classes('w-full items-center'):
             with ui.avatar():
                 ui.image(avatar)
