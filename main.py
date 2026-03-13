@@ -1,7 +1,6 @@
 import customtkinter as ctk
-from tkinter import *
 from img import *
-from PIL import ImageTk,Image
+import PIL.Image as PilImage
 from Frame_ecranprincipal import *
 # Faire 1 frame par app a chaque fois 
 
@@ -41,14 +40,21 @@ def finswipe(event):
         elif dy < -20:
             #Swipe haut
 """
+
 def diminuerson():
     pass
 
 def augmenterson():
     pass
 
+def setup_fond(frame, chemin):
+    image_pil = PilImage.open(chemin)
+    image_ctk = ctk.CTkImage(image_pil, size=(400, 640))
+    label = ctk.CTkLabel(frame, image=image_ctk, text="")
+    label.place(relwidth=1, relheight=1)
+    return label
 
-#customtkinter
+# customtkinter
 app = ctk.CTk()
 app.title("Prototype")
 app.geometry("400x700")
@@ -58,10 +64,19 @@ app.grid_rowconfigure(0, weight=1)  # écran principal
 app.grid_rowconfigure(1, weight=0)  # barre du bas
 app.grid_columnconfigure(0, weight=1)
 
+
 # FRAMES 
 frame_ecran1, frame_ecran2, frame_verrouille, frame_barre = creer_frames(app)
-frames = [frame_ecran1, frame_ecran2, frame_verrouille, frame_barre]
-setup_frames(frames,debutswipe,finswipe,eteindretelephone,diminuerson,augmenterson,ecranaccueil)
+setup_frames(frame_barre,eteindretelephone,diminuerson,augmenterson,ecranaccueil)
 afficher_ecran(frame_ecran1)
+
+# Fond d'écrans
+label = setup_fond(frame_ecran1,"img/ecran1.png")
+label2 = setup_fond(frame_ecran2,"img/ecran2.png")
+
+label.bind("<ButtonPress-1>", debutswipe)
+label.bind("<ButtonRelease-1>", finswipe)
+label2.bind("<ButtonPress-1>", debutswipe)
+label2.bind("<ButtonRelease-1>", finswipe)
 
 app.mainloop()

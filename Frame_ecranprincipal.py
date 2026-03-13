@@ -22,19 +22,7 @@ def creer_frames(app):
 
     return liste_frame
 
-def setup_frames(liste_frame, debutswipe, finswipe, eteindretelephone, diminuerson, augmenterson, ecranaccueil):
-    frame_ecran1 = liste_frame[0]
-    frame_ecran2 = liste_frame[1]
-    frame_verrouille = liste_frame[2]
-    frame_barre = liste_frame[3]
-
-    # swipe
-    frame_ecran1.bind("<ButtonPress-1>", debutswipe)
-    frame_ecran1.bind("<ButtonRelease-1>", finswipe)
-
-    frame_ecran2.bind("<ButtonPress-1>", debutswipe)
-    frame_ecran2.bind("<ButtonRelease-1>", finswipe)
-
+def setup_frames(frame_barre, eteindretelephone, diminuerson, augmenterson, ecranaccueil):
     #Buttons
     buttoneteindre = ctk.CTkButton(master=frame_barre,text="Eteindre",command=eteindretelephone,width=80,height=40,border_width=0,corner_radius=4,hover=False)
     buttoneteindre.pack(side="bottom")
