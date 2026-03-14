@@ -2,6 +2,7 @@ import customtkinter as ctk
 from img import *
 import PIL.Image as PilImage
 from Frame_ecranprincipal import *
+from application.Music import *
 from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
 from comtypes import CLSCTX_ALL
 
@@ -11,7 +12,7 @@ debut_y = 0
 def afficher_ecran(frame):
     for f in (frame_ecran1, frame_ecran2, frame_verrouille):
         f.grid_remove()
-    frame.grid()
+    frame.grid(row=0, column=0, sticky="nsew")
 
 def eteindretelephone():
     afficher_ecran(frame_verrouille)
@@ -33,14 +34,6 @@ def finswipe(event):
         elif dx > -20:
             afficher_ecran(frame_ecran1)
 
-# Si on veut faire un menu déroulant ou quelques choses du style vers le bas ou le haut 
-            """
-    else:
-        if dy > 20:
-            #Swipe bas
-        elif dy < -20:
-            #Swipe haut
-"""
 
 devices = AudioUtilities.GetSpeakers()
 interface = devices._dev.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
@@ -82,10 +75,13 @@ afficher_ecran(frame_ecran1)
 # Fond d'écrans
 label = setup_fond(frame_ecran1,"img/ecran1.png")
 label2 = setup_fond(frame_ecran2,"img/ecran2.png")
-
 label.bind("<ButtonPress-1>", debutswipe)
 label.bind("<ButtonRelease-1>", finswipe)
 label2.bind("<ButtonPress-1>", debutswipe)
 label2.bind("<ButtonRelease-1>", finswipe)
+
+#Applications
+app1 = charger_image("img/appmusique.png")
+placer_app(frame_ecran1,app1,musique,0,0,debutswipe,finswipe) # marche mieux avec label au lieu de frame_ecran1 mais ca me parait bizarre, demander a la prof 
 
 app.mainloop()
