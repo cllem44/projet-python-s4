@@ -1,5 +1,8 @@
 from uuid import uuid4          #permet de génèrer un id aélatoire pour chaque utilisateur
 from nicegui import ui          #permer de créer les éléments de l'interface web
+import tkinter as tk
+from tkinterweb import HtmlFrame
+import threading
 
 messages = []                   #stocke les msg envoyés sous forme de tuples
 
@@ -10,18 +13,18 @@ def chat_messages(own_id):
 
 @ui.page('/')
 def index():
-    ui.add_css('body {background-color: red;}')
+    ui.add_css('body {background-color: blue ;}')
     def send():
         messages.append((user, avatar, text.value))
         chat_messages.refresh()
         text.value = ''
 
     user = str(uuid4())
-    avatar = "https://img.freepik.com/psd-gratuit/illustration-realiste-voiture_23-2151227624.jpg?semt=ais_hybrid&w=740&q=80"
+    avatar = f"https://api.dicebear.com/7.x/bottts/svg?seed={user}"
     with ui.column().classes('w-full items-stretch'):
         chat_messages(user)
 
-    with ui.footer().classes('bg = red'):
+    with ui.footer().classes('bg = blue'):
         with ui.row().classes('w-full items-center'):
             with ui.avatar():
                 ui.image(avatar)
@@ -29,4 +32,22 @@ def index():
                 .props('rounded outlined').classes('flex-grow') \
                 .on('keydown.enter', send)
 
-ui.run()
+def start_server():
+    ui.run(host='127.0.0.1', port=8080)
+
+threading.Thread(target=start_server, daemon=True).start()
+
+
+
+
+
+fenetre = tk.Tk()
+fenetre.title("Chat")
+fenetre.geometry("640x400")
+
+frame = HtmlFrame(fenetre)
+frame.pack(fill = 'both',expand = True)
+
+frame.load_website("http://127.0.0.1:8080")
+
+fenetre.mainloop()
