@@ -94,7 +94,8 @@ def afficher_valeur():
 # ── Interface ─────────────────────────────────────────────────────────────────
 
 app = ctk.CTk()
-app.title("Prototype Météo")
+app.title("Prototype")
+app.iconbitmap("img/logo.ico")
 app.geometry("400x700")
 app.resizable(width=False, height=False)
 
