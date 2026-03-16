@@ -1,8 +1,10 @@
 import customtkinter as ctk
-from tkinter import *
 from img import *
-# Faire que lorsque qu'on appuie une première fois sur le bouton quitter, ça éteigne l'ecran en affichant un ecran noir surement avec ctk.set_appearance_mode("dark") comme commande
-# Faire 1 frame par app a chaque fois 
+import PIL.Image as PilImage
+from Frame_ecranprincipal import *
+from application.Music import *
+from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
+from comtypes import CLSCTX_ALL
 
 debut_x = 0
 debut_y = 0
@@ -10,7 +12,7 @@ debut_y = 0
 def afficher_ecran(frame):
     for f in (frame_ecran1, frame_ecran2, frame_verrouille):
         f.grid_remove()
-    frame.grid()
+    frame.grid(row=0, column=0, sticky="nsew")
 
 def eteindretelephone():
     afficher_ecran(frame_verrouille)
@@ -32,22 +34,29 @@ def finswipe(event):
         elif dx > -20:
             afficher_ecran(frame_ecran1)
 
-# Si on veut faire un menu déroulant ou quelques choses du style vers le bas ou le haut 
-            """
-    else:
-        if dy > 20:
-            #Swipe bas
-        elif dy < -20:
-            #Swipe haut
-"""
+
+devices = AudioUtilities.GetSpeakers()
+interface = devices._dev.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
+volume = interface.QueryInterface(IAudioEndpointVolume)
+
 def diminuerson():
-    pass
+    current = volume.GetMasterVolumeLevelScalar()  
+    new = max(0.0, current - 0.05)  
+    volume.SetMasterVolumeLevelScalar(new, None)
 
 def augmenterson():
-    pass
+    current = volume.GetMasterVolumeLevelScalar()
+    new = min(1.0, current + 0.05) 
+    volume.SetMasterVolumeLevelScalar(new, None)
 
+def setup_fond(frame, chemin):
+    image_pil = PilImage.open(chemin)
+    image_ctk = ctk.CTkImage(image_pil, size=(400, 640))
+    label = ctk.CTkLabel(frame, image=image_ctk, text="")
+    label.place(relwidth=1, relheight=1)
+    return label
 
-#customtkinter
+# customtkinter
 app = ctk.CTk()
 app.title("Prototype")
 app.geometry("400x700")
@@ -57,17 +66,25 @@ app.grid_rowconfigure(0, weight=1)  # écran principal
 app.grid_rowconfigure(1, weight=0)  # barre du bas
 app.grid_columnconfigure(0, weight=1)
 
-frame_ecran1 = Frame(app)
-frame_ecran1.grid(row=0, column=0, sticky="nsew")
-frame_ecran2 = Frame(app, bg="#FD0000")
-frame_ecran2.grid(row=0, column=0, sticky="nsew")
-frame_ecran2.grid_remove()
-frame_verrouille = Frame(app, bg="black")
-frame_verrouille.grid(row=0, column=0, sticky="nsew")
-frame_barre = Frame(app, height=60, bg="#c1c1c1")
-frame_barre.grid(row=1, column=0, sticky="ew")
-frame_barre.grid_propagate(False)
+
+# FRAMES 
+frame_ecran1, frame_ecran2, frame_verrouille, frame_barre = creer_frames(app)
+setup_frames(frame_barre,eteindretelephone,diminuerson,augmenterson,ecranaccueil)
 afficher_ecran(frame_ecran1)
+
+# Fond d'écrans
+label = setup_fond(frame_ecran1,"img/ecran1.png")
+label2 = setup_fond(frame_ecran2,"img/ecran2.png")
+label.bind("<ButtonPress-1>", debutswipe)
+label.bind("<ButtonRelease-1>", finswipe)
+label2.bind("<ButtonPress-1>", debutswipe)
+label2.bind("<ButtonRelease-1>", finswipe)
+
+#Applications
+app1 = charger_image("img/appmusique.png")
+placer_app(frame_ecran1,app1,musique,0,0,debutswipe,finswipe) # marche mieux avec label au lieu de frame_ecran1 mais ca me parait bizarre, demander a la prof 
+
+app.mainloop()
 #tkinter
 
 
