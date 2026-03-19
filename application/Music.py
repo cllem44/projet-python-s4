@@ -31,28 +31,30 @@ def placer_app(frame,icone,lancerapp,ligne,colonne):
     buttonapp.grid(row=ligne,column=colonne,padx=10,pady=10,sticky="w")
 
 
-app = ctk.CTk()
+"""app = ctk.CTk()
 app.title("Prototype")
 app.geometry("400x700")
 app.iconbitmap("img/logo.ico")
 app.resizable(width=False,height=False)
 app.grid_rowconfigure(0, weight=1)  # écran principal
 app.grid_rowconfigure(1, weight=0)  # barre du bas
-app.grid_columnconfigure(0, weight=1)
-frame_music = Frame(app, bg="#686868")
-frame_music.grid(row=0, column=0, sticky="nsew")
-frame_barre = Frame(app, height=90, bg="#c1c1c1")
-frame_barre.grid(row=1, column=0, sticky="ew")
-frame_barre.grid_propagate(False)
+app.grid_columnconfigure(0, weight=1)"""
+def start_musique(app):
+    
 
-icone_play = charger_image("img/play.png")
-icone_pause = charger_image("img/pause.png")
-icone_sup = charger_image("img/superieur.png")
-icone_inf = charger_image("img/inferieur.png")
+    frame_music = Frame(app, bg="#686868")
+    frame_music.grid(row=0, column=0, sticky="nsew")
+    frame_barre = Frame(app, height=90, bg="#c1c1c1")
+    frame_barre.grid(row=1, column=0, sticky="ew")
+    frame_barre.grid_propagate(False)
 
-placer_app(frame_music,icone_play,play,0,0)
-placer_app(frame_music,icone_pause,pause,0,1)
-placer_app(frame_music,icone_sup,suivant,0,2)
-placer_app(frame_music,icone_inf,retour,0,3)
+    icone_play = charger_image("img/play.png")
+    icone_pause = charger_image("img/pause.png")
+    icone_sup = charger_image("img/superieur.png")
+    icone_inf = charger_image("img/inferieur.png")
 
-app.mainloop()
+    placer_app(frame_music,icone_play,play,0,0)
+    placer_app(frame_music,icone_pause,pause,0,1)
+    placer_app(frame_music,icone_sup,suivant,0,2)
+    placer_app(frame_music,icone_inf,retour,0,3)
+
