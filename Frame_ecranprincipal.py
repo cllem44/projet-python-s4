@@ -16,9 +16,9 @@ def creer_frames(app):
     frame_verrouille.grid(row=0, column=0, sticky="nsew")
     frame_verrouille.grid_remove()
 
-    frame_barre = Frame(app, height=90, bg="#c1c1c1")
+    frame_barre = Frame(app, height=60, bg="#c1c1c1")
     frame_barre.grid(row=1, column=0, sticky="ew")
-    frame_barre.grid_propagate(False)
+
 
 
     liste_frame = [frame_ecran1,frame_ecran2,frame_verrouille,frame_barre]
@@ -36,10 +36,13 @@ def setup_frames(frame_barre, eteindretelephone, diminuerson, augmenterson, ecra
     #Buttons
     buttoneteindre = ctk.CTkButton(master=frame_barre,text="Eteindre",command=eteindretelephone,width=80,height=40,border_width=0,corner_radius=4,hover=False)
     buttoneteindre.grid(row=1, column=2, pady=2, sticky ="s")
+    
     buttondiminuer = ctk.CTkButton(master=frame_barre,text="-",command=diminuerson,width=60,height=10,fg_color="#c1c1c1",text_color="black",border_width=0,font=("Arial", 30),corner_radius=5,hover=False)
     buttondiminuer.grid(row=0, column=1, padx=35, sticky ="w")
+    
     buttonprincipale = ctk.CTkButton(master=frame_barre,text="",command=ecranaccueil,width=55,height=55,border_width=0,corner_radius=30,hover=False)
     buttonprincipale.grid(row=0, column=2, padx=42, sticky ="w")
+    
     buttonaugmenter = ctk.CTkButton(master=frame_barre,text="+",command=augmenterson,width=60,height=60,fg_color="#c1c1c1",text_color="black",border_width=0,font=("Arial", 30),corner_radius=0,hover=False)
     buttonaugmenter.grid(row=0, column=3, padx=35, sticky ="w")
 
