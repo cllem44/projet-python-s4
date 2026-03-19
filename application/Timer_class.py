@@ -17,8 +17,8 @@ class StopWatch(Frame):
         l.pack(fill=X,expand=NO,pady=2,padx=2)
 
     def _update(self):
-        self._elapsedtime = time.time() - self._start
-        self._setTime(self._elapsedtime)
+        self.elapsedtime = time.time() - self._start
+        self._setTime(self.elapsedtime)
         self._timer = self.after(50, self._update)
     
     def _setTime(self, elap):
@@ -29,19 +29,19 @@ class StopWatch(Frame):
         self.timestr.set('%02d:%02d:%02d:%02d' % (hours, minutes, seconds, hseconds))
 
     def Start(self):
-        if not self._running:
-            self._start = time.time() - self._elapsedtime
+        if not self.running:
+            self._start = time.time() - self.elapsedtime
             self._update()
-            self._running = 1
+            self.running = 1
     
     def Stop(self):
-        if self._running:
+        if self.running:
             self.after_cancel(self._timer)
-            self._elapsedtime = time.time() - self._start
-            self._setTime(self._elapsedtime)
-            self._running = 0
+            self.elapsedtime = time.time() - self._start
+            self._setTime(self.elapsedtime)
+            self.running = 0
     
     def Reset(self):
         self._start = time.time()
-        self._elapsedtime = 0.0
-        self._setTime(self._elapsedtime)
+        self.elapsedtime = 0.0
+        self._setTime(self.elapsedtime)
