@@ -9,16 +9,17 @@ from comtypes import CLSCTX_ALL
 debut_x = 0
 debut_y = 0
 
-def afficher_ecran(frame):
-    for f in (frame_ecran1, frame_ecran2, frame_verrouille):
-        f.grid_remove()
-    frame.grid(row=0, column=0, sticky="nsew")
+def afficher_ecran(ancien_frame,nouveau_frame):
+    global frame_actif
+    ancien_frame.grid_remove()
+    nouveau_frame.grid(row=0, column=0, sticky="nsew")
+    frame_actif = nouveau_frame
 
 def eteindretelephone():
-    afficher_ecran(frame_verrouille)
+    afficher_ecran(frame_actif,frame_verrouille)
 
 def ecranaccueil():
-    afficher_ecran(frame_ecran1)
+    afficher_ecran(frame_actif,frame_ecran1)
 
 def debutswipe(event):
     global debut_x, debut_y
@@ -30,9 +31,9 @@ def finswipe(event):
     dy = event.y - debut_y
     if abs(dx) > abs(dy):
         if dx < 20:
-            afficher_ecran(frame_ecran2)
+            afficher_ecran(frame_ecran1,frame_ecran2)
         elif dx > -20:
-            afficher_ecran(frame_ecran1)
+            afficher_ecran(frame_ecran2,frame_ecran1)
 
 
 devices = AudioUtilities.GetSpeakers()
@@ -70,7 +71,7 @@ app.grid_columnconfigure(0, weight=1)
 # FRAMES 
 frame_ecran1, frame_ecran2, frame_verrouille, frame_barre = creer_frames(app)
 setup_frames(frame_barre,eteindretelephone,diminuerson,augmenterson,ecranaccueil)
-afficher_ecran(frame_ecran1)
+afficher_ecran(frame_ecran2,frame_ecran1)
 
 # Fond d'écrans
 label = setup_fond(frame_ecran1,"img/ecran1.png")
@@ -81,7 +82,9 @@ label2.bind("<ButtonPress-1>", debutswipe)
 label2.bind("<ButtonRelease-1>", finswipe)
 
 #Applications
-app1 = charger_image("img/appmusique.png")
-placer_app(frame_ecran1,app1,musique,0,0,debutswipe,finswipe) # marche mieux avec label au lieu de frame_ecran1 mais ca me parait bizarre, demander a la prof 
+app_musique = charger_image("img/appmusique.png")
+placer_app(frame_ecran1,app_musique,musique,0,0) 
+placer_app(frame_ecran2,app_musique,musique,0,0) 
+
 
 app.mainloop()
