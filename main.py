@@ -6,6 +6,7 @@ from application.Music import *
 from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
 from comtypes import CLSCTX_ALL
 from application.meteo import creer_meteo
+from application.horloge import creer_horloge
 
 debut_x = 0
 debut_y = 0
@@ -91,9 +92,15 @@ label2.bind("<ButtonRelease-1>", finswipe)
 frame_meteo = creer_meteo(app)
 frame_meteo.grid_remove()
 
+
 app_meteo = charger_image("img/app_meteo.png")
 placer_app(frame_ecran1, app_meteo, lambda: afficher_ecran(frame_actif, frame_meteo), 0, 0)
 
+frame_horloge = creer_horloge(app)
+frame_horloge.grid_remove()
+
+app_horloge = charger_image("img/app_meteo.png")
+placer_app(frame_ecran1, app_horloge, lambda: afficher_ecran(frame_actif, frame_horloge), 1, 0)
 
 
 
