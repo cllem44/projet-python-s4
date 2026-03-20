@@ -1,119 +1,97 @@
-#pip install tzdata
+# horloge.py
 import datetime as dt
-from tkinter import *
-from Timer_class import *
+from tkinter import Frame, Label, Button, Entry
+from application.Timer_class import StopWatch
 from zoneinfo import ZoneInfo
 from datetime import datetime
 
+def creer_horloge(app):
+    global frame_Data
 
-clock_app = Tk()
-clock_app.title("Horloge")
-clock_app.iconbitmap("img/logo.ico")
-clock_app.geometry("400x640")
-clock_app.config(background="#000000")
+    # Frame principale
+    frame_horloge = Frame(app, background="#000000")
+    frame_horloge.grid(row=0, column=0, sticky="nsew")
+    frame_horloge.grid_remove()
 
-def world_clock():
-    clear_clockapp()
+    # Configurer frame_horloge pour centrer son contenu
+    frame_horloge.grid_rowconfigure(0, weight=1)
+    frame_horloge.grid_rowconfigure(1, weight=0)
+    frame_horloge.grid_columnconfigure(0, weight=1)
 
-    label_town = Label(frame_Data,background="#000000",fg = "white",font=("Calibri", 12,"bold"))
-    label_town.config(text='Ville exemple (Europe/Paris): ')
-    label_town.grid(row=0,column=0)
+    # Frame données — parent = frame_horloge 
+    frame_Data = Frame(frame_horloge, background="#000000")
+    frame_Data.grid(row=0, column=0)
 
-    champ_town = Entry(frame_Data, bg="white", fg="black",font="Calibri", bd=2, justify=CENTER)
-    champ_town.grid(row=0,column=1,pady=10)
-    
-    label_town_hour = Label(frame_Data,background="#000000",fg = "white",font=("Calibri", 12,"bold"))
-    label_town_hour.grid(row=2,column=0)
+    # Frame boutons — parent = frame_horloge 
+    frame_fonctionalities = Frame(frame_horloge, background="#000000")
+    frame_fonctionalities.grid(row=1, column=0, pady=10)
 
-    def display_hour():
-        try:
-            town = champ_town.get().strip()
+    # Contenu initial
+    current_hour = dt.datetime.now().strftime("%H:%M:%S")
+    label_welcome = Label(
+        frame_Data,
+        background="#000000",
+        fg="white",
+        font=("Calibri", 24, "bold"),
+        text=f"Appli Horloge\n{current_hour}"
+    )
+    label_welcome.grid(row=0, column=0)
 
-            town_time = datetime.now(ZoneInfo(town))
-            hour = town_time.strftime('%H:%M:%S')
+    def clear_clockapp():
+        for w in frame_Data.winfo_children():
+            w.destroy()
 
-            label_town_hour.config(text=f"Heure à {town.split('/')[1]} : {hour}")
-        
-        except Exception as e:
-            print(e)
-            label_town_hour.config(text='Ville invalide ou inconnue')
-    
-    button_world_hour = Button(frame_Data,text = "AFFICHER",bg='black',fg="white",font=("Calibri",12),width=10,command=display_hour)
-    button_world_hour.grid(row=1,column=1)
+    def updateHour():
+        clear_clockapp()
+        label_Hour = Label(frame_Data, background="#000000", fg="white", font=("Calibri", 24, "bold"))
+        label_Hour.pack()
 
-    
-    
+        def refresh():
+            current_time = dt.datetime.now().strftime("%H:%M:%S")
+            label_Hour.config(text=current_time)
+            app.after(1000, refresh)
 
+        refresh()
 
+    def menu_timer():
+        clear_clockapp()
+        timer = StopWatch(frame_Data)
+        timer.pack()
 
-def clear_clockapp():
-    for w in frame_Data.winfo_children():
-        w.destroy()
+        frame_button_timer = Frame(frame_Data, background='#000000')
+        frame_button_timer.pack(pady=10)
 
+        Button(frame_button_timer, text="START", bg='black', fg='white', font=("Calibri", 12), width=10, command=timer.Start).grid(row=0, column=0)
+        Button(frame_button_timer, text="STOP",  bg='black', fg='white', font=("Calibri", 12), width=10, command=timer.Stop).grid(row=0, column=1)
+        Button(frame_button_timer, text="RESET", bg='black', fg='white', font=("Calibri", 12), width=10, command=timer.Reset).grid(row=0, column=2)
 
+    def world_clock():
+        clear_clockapp()
 
-def updateHour():
-    clear_clockapp()
+        Label(frame_Data, background="#000000", fg="white", font=("Calibri", 12, "bold"),
+              text='Ville exemple (Europe/Paris): ').grid(row=0, column=0)
 
-    global label_Hour
-    label_Hour = Label(frame_Data,background="#000000",fg = "white",font=("Calibri", 24,"bold"))
-    label_Hour.pack()
-    
-    def refresh():
-        current_time = dt.datetime.now().strftime("%H:%M:%S")
-        label_Hour.config(text=current_time)
-        clock_app.after(1000, refresh)
+        champ_town = Entry(frame_Data, bg="white", fg="black", font="Calibri", bd=2, justify="center")
+        champ_town.grid(row=0, column=1, pady=10)
 
-    refresh()
+        label_town_hour = Label(frame_Data, background="#000000", fg="white", font=("Calibri", 12, "bold"))
+        label_town_hour.grid(row=2, column=0)
 
+        def display_hour():
+            try:
+                town = champ_town.get().strip()
+                town_time = datetime.now(ZoneInfo(town))
+                hour = town_time.strftime('%H:%M:%S')
+                label_town_hour.config(text=f"Heure à {town.split('/')[1]} : {hour}")
+            except Exception as e:
+                label_town_hour.config(text='Ville invalide ou inconnue')
 
-def menu_timer():
+        Button(frame_Data, text="AFFICHER", bg='black', fg="white", font=("Calibri", 12),
+               width=10, command=display_hour).grid(row=1, column=1)
 
-    clear_clockapp()
-    timer = StopWatch(frame_Data)
-    timer.pack()
+    # Boutons de navigation
+    Button(frame_fonctionalities, text="HEURE",  bg='black', fg="white", font=("Calibri", 12), width=10, command=updateHour).grid(row=0, column=0, padx=5)
+    Button(frame_fonctionalities, text="CHRONO", bg='black', fg="white", font=("Calibri", 12), width=10, command=menu_timer).grid(row=0, column=1, padx=5)
+    Button(frame_fonctionalities, text="MONDE",  bg='black', fg="white", font=("Calibri", 12), width=10, command=world_clock).grid(row=0, column=2, padx=5)
 
-    frame_button_timer = Frame(frame_Data,background='#000000')
-    frame_button_timer.pack(pady=10)
-
-    button_start = Button(frame_button_timer,text="START",bg='black',fg='white',font=("Calibri",12),width=10,command=timer.Start)
-    button_stop = Button(frame_button_timer,text="STOP",bg='black',fg='white',font=("Calibri",12),width=10,command=timer.Stop)
-    button_reset = Button(frame_button_timer,text="RESET",bg='black',fg='white',font=("Calibri",12),width=10,command=timer.Reset)
-    button_start.grid(row=0,column=0)
-    button_stop.grid(row=0,column=1)
-    button_reset.grid(row=0,column=2)
-
-
-    
-
-
-    
-
-frame_fonctionalities = Frame(clock_app,background="#000000")
-frame_fonctionalities.place(x=0,y=605)
-
-frame_Data = Frame(clock_app,background="#000000")
-frame_Data.place(relx=0.5,rely=0.5,anchor="center")
-
-current_hour = dt.datetime.now().strftime("%H:%M:%S")
-label_welcome = Label(frame_Data,background="#000000",fg = "white",font=("Calibri", 24,"bold"))
-label_welcome.config(text=f"Appli Horloge\n{current_hour}")
-label_welcome.grid(row=0,column=0)
-
-
-button_clock = Button(frame_fonctionalities, text="HEURE", bg='black',fg="white",font=("Calibri",12),width=10,command=updateHour)
-button_clock.grid(row=0,column=0,padx=5)
-
-
-button_timer = Button(frame_fonctionalities,text="CHRONO",bg='black',fg="white",font=("Calibri",12),width=10,command=menu_timer)
-button_timer.grid(row=0,column=1,padx=5)
-
-button_world_clock = Button(frame_fonctionalities,text="MONDE",bg='black',fg="white",font=("Calibri",12),width=10,command=world_clock)
-button_world_clock.grid(row=0,column=2,padx=5)
-
-
-
-
-
-
-clock_app.mainloop()
+    return frame_horloge
