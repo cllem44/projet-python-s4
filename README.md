@@ -4,5 +4,6 @@ installer Pillow dans l'invite de commande : py -m pip install Pillow (pour les 
 installer pycaw dans l'invite de commande (pour volume pc) : py -m pip install pycaw 
 installer comtypes dans l'invite de commande (pour volume pc): py -m pip install comtypes
 taille ecran : "400x700"
-py -m pip install vstools
-py -m pip install pyglet (peut etre 2 fois)
+#py -m pip install vstools
+installer pyglet pour musique : py -m pip install pyglet (peut etre 2 fois)
+py -m pip install meteofrance_api
