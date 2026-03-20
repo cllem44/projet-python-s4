@@ -12,7 +12,10 @@ Pause = False
 player = pyglet.media.Player()
 
 def charger_musique():
-    global musique_actuelle
+    global musique_actuelle,musiques
+
+    musiques.clear()
+    listeChanson.delete(0,END)
     app.directory = filedialog.askdirectory()
     
     for musique in os.listdir(app.directory):
