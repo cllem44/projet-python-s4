@@ -64,7 +64,7 @@ app = ctk.CTk()
 app.title("Prototype")
 app.geometry("400x700")
 app.iconbitmap("img/logo.ico")
-app.resizable(width=False,height=False)
+#app.resizable(width=False,height=False)
 app.grid_rowconfigure(0, weight=1)  # écran principal
 app.grid_rowconfigure(1, weight=0)  # barre du bas
 app.grid_columnconfigure(0, weight=1)
