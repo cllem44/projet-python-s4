@@ -95,3 +95,4 @@ def creer_horloge(app):
     Button(frame_fonctionalities, text="MONDE",  bg='black', fg="white", font=("Calibri", 12), width=10, command=world_clock).grid(row=0, column=2, padx=5)
 
     return frame_horloge
+
