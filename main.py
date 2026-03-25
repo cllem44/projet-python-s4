@@ -101,7 +101,7 @@ placer_app(frame_ecran1, app_meteo, lambda: afficher_ecran(frame_actif, frame_me
 frame_horloge = creer_horloge(app)
 frame_horloge.grid_remove()
 
-app_horloge = charger_image("img/app_meteo.png")
+app_horloge = charger_image("img/app_horloge.png")
 placer_app(frame_ecran1, app_horloge, lambda: afficher_ecran(frame_actif, frame_horloge), 1, 0)
 
 frame_music = creer_music(app)
