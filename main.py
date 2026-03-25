@@ -65,7 +65,7 @@ app = ctk.CTk()
 app.title("Prototype")
 app.geometry("400x700")
 app.iconbitmap("img/logo.ico")
-#app.resizable(width=False,height=False)
+app.resizable(width=False,height=False)
 app.grid_rowconfigure(0, weight=1)  # écran principal
 app.grid_rowconfigure(1, weight=0)  # barre du bas
 app.grid_columnconfigure(0, weight=1)
@@ -100,7 +100,7 @@ placer_app(frame_ecran1, app_meteo, lambda: afficher_ecran(frame_actif, frame_me
 frame_horloge = creer_horloge(app)
 frame_horloge.grid_remove()
 
-app_horloge = charger_image("img/app_meteo.png")
+app_horloge = charger_image("img/app_horloge.png")
 placer_app(frame_ecran1, app_horloge, lambda: afficher_ecran(frame_actif, frame_horloge), 1, 0)
 
 frame_music = creer_music(app)
