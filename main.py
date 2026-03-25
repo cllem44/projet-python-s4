@@ -8,6 +8,7 @@ from comtypes import CLSCTX_ALL
 from application.meteo import creer_meteo
 from application.horloge import creer_horloge
 from application.Music import creer_music
+from application.bloc_notes.Bloc_notes import creer_bloc_notes
 
 debut_x = 0
 debut_y = 0
@@ -65,7 +66,7 @@ app = ctk.CTk()
 app.title("Prototype")
 app.geometry("400x700")
 app.iconbitmap("img/logo.ico")
-#app.resizable(width=False,height=False)
+app.resizable(width=False,height=False)
 app.grid_rowconfigure(0, weight=1)  # écran principal
 app.grid_rowconfigure(1, weight=0)  # barre du bas
 app.grid_columnconfigure(0, weight=1)
@@ -108,6 +109,13 @@ frame_music.grid_remove()
 
 app_musique = charger_image("img/app_musique.png")
 placer_app(frame_ecran1, app_musique, lambda: afficher_ecran(frame_actif, frame_music), 2, 0)
+
+frame_bloc_notes = creer_bloc_notes(app)
+frame_bloc_notes.grid_remove()
+
+app_bloc_notes = charger_image("img/app_musique.png")
+placer_app(frame_ecran1, app_bloc_notes, lambda: afficher_ecran(frame_actif, frame_bloc_notes), 2, 1)
+
 
 
 app.mainloop()
