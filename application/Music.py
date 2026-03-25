@@ -1,11 +1,13 @@
 import customtkinter as ctk
 from tkinter import *
 from tkinter import filedialog
+from tkinter import ttk
 from PIL import Image
 import os 
 import pyglet
 
 def creer_music (app):
+    global musique_actuelle,musiques
     musiques = []
     musique_actuelle = ""
     Pause = False
@@ -67,9 +69,6 @@ def creer_music (app):
         musique_actuelle = musiques[index]
         play()
 
-    def musique():
-        print("hello")
-
     def charger_image(url):
         image = ctk.CTkImage(light_image=Image.open(url), size= (50,50))
         return image
@@ -93,11 +92,16 @@ def creer_music (app):
     frame_barre.grid(row=2, column=0, sticky="ew")
     frame_barre.grid_propagate(False)
 
+    """
     menubar = Menu(frame_music_general)
     app.config(menu=menubar)
     organise_menu = Menu(menubar,tearoff=False)
     organise_menu.add_command(label="Choississez votre dossier avec les musiques",command=charger_musique)
     menubar.add_cascade(label="Playlist",menu =organise_menu)
+    """
+
+    options = ["Choississez votre dossier avec les musiques"]
+    choixdossier = ttk.Combobox(frame_music_general, values=options)
 
     listeChanson = Listbox(frame_music,bg ='black',fg = "white",width=100, height = 100)
     listeChanson.grid(row=0,column=0, sticky="ns")
@@ -107,6 +111,8 @@ def creer_music (app):
     icone_sup = charger_image("img/musique/superieur.png")
     icone_inf = charger_image("img/musique/inferieur.png")
 
+    choixdossier.grid(row=0,column=0,padx=0,pady=0)
+    choixdossier.bind("<<ComboboxSelected>>",lambda e: charger_musique())
     buttonplay = ctk.CTkButton(master=frame_btnmusique,image=icone_play,text="",command=play,width=50,height=50,fg_color="transparent",border_width=0,corner_radius=0,hover=False)
     buttonplay.grid(row=2,column=1,padx=0,pady=0,sticky="w")
     buttonpause = ctk.CTkButton(master=frame_btnmusique,image=icone_pause,text="",command=pause,width=50,height=50,fg_color="transparent",border_width=0,corner_radius=0,hover=False)
