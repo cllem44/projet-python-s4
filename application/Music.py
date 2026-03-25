@@ -32,7 +32,10 @@ def creer_music (app):
         musique_actuelle = musiques[listeChanson.curselection()[0]]
 
     def play():
-        global musique_actuelle, Pause , player
+        nonlocal Pause , player
+
+        if not musiques or not musique_actuelle:
+            return
         if Pause:
             player.play()
             Pause = False
@@ -45,12 +48,14 @@ def creer_music (app):
 
 
     def pause():
-        global Pause
+        nonlocal Pause
         player.pause()
         Pause = True
 
     def precedent():
         global musique_actuelle
+        if not musiques:
+            return
         index = musiques.index(musique_actuelle)
         if index > 0:
             index -= 1
@@ -61,6 +66,8 @@ def creer_music (app):
 
     def suivant():
         global musique_actuelle
+        if not musiques:
+            return
         index = musiques.index(musique_actuelle)
         if index < len(musiques) - 1:
             index += 1
@@ -81,30 +88,24 @@ def creer_music (app):
 
     frame_music_general.grid_rowconfigure(0, weight=1)
     frame_music_general.grid_rowconfigure(1, weight=0)
+    frame_music_general.grid_rowconfigure(2, weight=1)
     frame_music_general.grid_columnconfigure(0, weight=1)
 
-    frame_music = Frame(frame_music_general, bg="#FFFEFE")
+    frame_music = Frame(frame_music_general,height= 600,width = 400, bg="#FFFEFE")
+    frame_music.configure(bg="black")
     frame_music.grid(row=0, column=0, sticky="nsew")
-    frame_btnmusique = Frame(frame_music_general, bg ="#FFFFFF")
+    frame_btnmusique = Frame(frame_music_general,height = 40,width = 400, bg ="#FFFFFF")
     frame_btnmusique.grid(row=1, column=0, sticky ="ew")
     frame_btnmusique.grid_columnconfigure((0,1,2,3), weight=1)
-    frame_barre = Frame(frame_music_general, height=90, bg="#c1c1c1")
+    frame_barre = Frame(frame_music_general, height=60,width = 400, bg="#c1c1c1")
     frame_barre.grid(row=2, column=0, sticky="ew")
     frame_barre.grid_propagate(False)
 
-    """
-    menubar = Menu(frame_music_general)
-    app.config(menu=menubar)
-    organise_menu = Menu(menubar,tearoff=False)
-    organise_menu.add_command(label="Choississez votre dossier avec les musiques",command=charger_musique)
-    menubar.add_cascade(label="Playlist",menu =organise_menu)
-    """
-
     options = ["Choississez votre dossier avec les musiques"]
-    choixdossier = ttk.Combobox(frame_music_general, values=options)
+    choixdossier = ttk.Combobox(frame_music, values=options,width=50)
 
     listeChanson = Listbox(frame_music,bg ='black',fg = "white",width=100, height = 100)
-    listeChanson.grid(row=0,column=0, sticky="ns")
+    listeChanson.grid(row=1,column=0,padx=0,pady=0, sticky="ns")
 
     icone_play = charger_image("img/musique/play.png")
     icone_pause = charger_image("img/musique/pause.png")
@@ -114,13 +115,13 @@ def creer_music (app):
     choixdossier.grid(row=0,column=0,padx=0,pady=0)
     choixdossier.bind("<<ComboboxSelected>>",lambda e: charger_musique())
     buttonplay = ctk.CTkButton(master=frame_btnmusique,image=icone_play,text="",command=play,width=50,height=50,fg_color="transparent",border_width=0,corner_radius=0,hover=False)
-    buttonplay.grid(row=2,column=1,padx=0,pady=0,sticky="w")
+    buttonplay.grid(row=0,column=1,padx=0,pady=0,sticky="w")
     buttonpause = ctk.CTkButton(master=frame_btnmusique,image=icone_pause,text="",command=pause,width=50,height=50,fg_color="transparent",border_width=0,corner_radius=0,hover=False)
-    buttonpause.grid(row=2,column=2,padx=0,pady=0,sticky="w")
+    buttonpause.grid(row=0,column=2,padx=0,pady=0,sticky="w")
     buttonprecedent = ctk.CTkButton(master=frame_btnmusique,image=icone_inf,text="",command=precedent,width=50,height=50,fg_color="transparent",border_width=0,corner_radius=0,hover=False)
-    buttonprecedent.grid(row=2,column=0,padx=0,pady=0,sticky="w")
+    buttonprecedent.grid(row=0,column=0,padx=0,pady=0,sticky="w")
     buttonsuivant = ctk.CTkButton(master=frame_btnmusique,image=icone_sup,text="",command=suivant,width=50,height=50,fg_color="transparent",border_width=0,corner_radius=0,hover=False)
-    buttonsuivant.grid(row=2,column=3,padx=0,pady=0,sticky="w")
+    buttonsuivant.grid(row=0,column=3,padx=0,pady=0,sticky="w")
 
     return frame_music_general
 
