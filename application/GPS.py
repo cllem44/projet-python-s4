@@ -6,7 +6,7 @@ import geocoder
 import tkintermapview as tkm
 import math
 
-def creer_map():
+def creer_map(app):
     global list_coord
     #acquiert la position de l'utilisateur à partir de son adresse ip(pas très précis)
     def get_position():
@@ -20,7 +20,7 @@ def creer_map():
         if ltlng:
             label_latitude.config(text=f'Votre latitude: {ltlng[0]}')
             label_longitude.config(text=f'Votre longitude: {ltlng[1]}')
-        map_app.after(1000,update_position)
+        app.after(1000,update_position)
 
     #Permet de calculer la distance entre les deux derniers points placés grâce à la loi des sinus
     def distance_last_point(list_coord):
@@ -54,7 +54,8 @@ def creer_map():
 
     #Définit l'évènement effectué pour un clic gauche sur la carte
     def left_click_event(coordinates_tuple):
-        print("Coordonnées du lieu clické:", coordinates_tuple)
+        pass
+        #print("Coordonnées du lieu clické:", coordinates_tuple)
     
     def display_distance():
         label_latitude.config(text='')
@@ -63,15 +64,15 @@ def creer_map():
        
 
 
-    map_app = Tk()
+    '''map_app = Tk()
     map_app.title("MAP")
     map_app.iconbitmap("img/logo.ico")
     map_app.geometry("400x640")
-    map_app.config(background="#000000")
+    map_app.config(background="#000000")'''
 
     #Initialisation de la frame et des labels
-    frame_latlng = Frame(map_app,background="#000000")
-    frame_latlng.pack(anchor='n')
+    frame_latlng = Frame(app,background="#000000")
+    frame_latlng.grid(row=0, column=0, sticky="nsew")
 
     label_latitude = Label(frame_latlng,background="#000000",fg = "white",font=("Calibri", 12,"bold"))
     label_latitude.grid(row=0,column=0)
@@ -94,6 +95,6 @@ def creer_map():
     map_widget.add_left_click_map_command(left_click_event)
     map_widget.grid(row=2,column=0)
 
-    map_app.mainloop()
+    return frame_latlng
 
-creer_map()
+#creer_map()

@@ -51,5 +51,5 @@ def placer_app(frame,icone,lancerapp,ligne,colonne):
     frame.rowconfigure((0,1,2,3), weight=1)
 
     #Applications
-    buttonapp = ctk.CTkButton(master=frame,image=icone,text="",command=lancerapp,width=50,height=50,fg_color="transparent",border_width=0,corner_radius=0,hover=False)
+    buttonapp = ctk.CTkButton(master=frame,image=icone,text="",command=lancerapp,width=50,height=50,fg_color="transparent",bg_color="transparent",border_width=0,corner_radius=0,hover=False)
     buttonapp.grid(row=ligne,column=colonne,padx=10,pady=10,sticky="w")
