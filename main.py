@@ -9,6 +9,7 @@ from application.meteo import creer_meteo
 from application.horloge import creer_horloge
 from application.Music import creer_music
 from application.bloc_notes.Bloc_notes import creer_bloc_notes
+from application.GPS import creer_map
 
 debut_x = 0
 debut_y = 0
@@ -113,8 +114,20 @@ placer_app(frame_ecran1, app_musique, lambda: afficher_ecran(frame_actif, frame_
 frame_bloc_notes = creer_bloc_notes(app)
 frame_bloc_notes.grid_remove()
 
-app_bloc_notes = charger_image("img/app_musique.png")
+app_bloc_notes = charger_image("img/app_bloc_note.png")
 placer_app(frame_ecran1, app_bloc_notes, lambda: afficher_ecran(frame_actif, frame_bloc_notes), 2, 1)
+
+'''frame_bataille_navale= creer_bataille_navale(app)
+frame_bataille_navale.grid_remove()
+
+app_bataille_navale = charger_image("img/app_bataille_navale.png")
+placer_app(frame_ecran1, app_bataille_navale, lambda: afficher_ecran(frame_actif, frame_bataille_navale), 2, 1)
+'''
+frame_GPS = creer_map(app)
+frame_GPS.grid_remove()
+
+app_GPS = charger_image("img/app_map.png")
+placer_app(frame_ecran1,app_GPS, lambda: afficher_ecran(frame_actif, frame_GPS), 0, 1)
 
 
 
