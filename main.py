@@ -10,6 +10,7 @@ from application.horloge import creer_horloge
 from application.Music import creer_music
 from application.bloc_notes.Bloc_notes import creer_bloc_notes
 from application.GPS import creer_map
+from application.Parametre import init_frames
 
 debut_x = 0
 debut_y = 0
@@ -79,8 +80,8 @@ setup_frames(frame_barre,eteindretelephone,diminuerson,augmenterson,ecranaccueil
 afficher_ecran(frame_ecran2,frame_ecran1)
 
 # Fond d'écrans
-label = setup_fond(frame_ecran1,"img/ecran1.png")
-label2 = setup_fond(frame_ecran2,"img/ecran2.png")
+label = setup_fond(frame_ecran1,"img/fondecran/ecran1.png")
+label2 = setup_fond(frame_ecran2,"img/fondecran/ecran2.png")
 label.bind("<ButtonPress-1>", debutswipe)
 label.bind("<ButtonRelease-1>", finswipe)
 label2.bind("<ButtonPress-1>", debutswipe)

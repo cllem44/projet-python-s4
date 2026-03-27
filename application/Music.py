@@ -5,7 +5,6 @@ from tkinter import ttk
 from PIL import Image
 import os 
 import pyglet
-import ctypes
 
 def creer_music (app):
     global musique_actuelle,musiques
@@ -128,10 +127,6 @@ def creer_music (app):
 
 
 if __name__ == "__main__":
-    ctypes.windll.shcore.SetProcessDpiAwareness(1)
-    ctk.deactivate_automatic_dpi_awareness()
-    ctk.set_widget_scaling(1.0)
-    ctk.set_window_scaling(1.0)
     app = ctk.CTk()
     app.title("Prototype")
     app.iconbitmap("img/logo.ico")
