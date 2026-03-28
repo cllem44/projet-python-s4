@@ -5,26 +5,18 @@ import PIL.Image as PilImage
 import os
 # Changement fond d'ecran / Changement orga appli 
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+label_ecran1 = None
+label_ecran2 = None
+
+def init_frames(l_ecran1, l_ecran2):
+    global label_ecran1, label_ecran2
+    label_ecran1 = l_ecran1
+    label_ecran2 = l_ecran2
+    #print(label_ecran1,label_ecran2)
+
 def creer_parametre(app):
-
-    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-    label_ecran1 = None
-    label_ecran2 = None
-
-    def init_frames(l_ecran1, l_ecran2):
-        global label_ecran1, label_ecran2
-        label_ecran1 = l_ecran1
-        label_ecran2 = l_ecran2
-
-
-    def setup_fond(frame, chemin):
-        image_pil = PilImage.open(chemin)
-        image_ctk = ctk.CTkImage(image_pil, size=(400, 640))
-        label = ctk.CTkLabel(frame, image=image_ctk, text="")
-        label.place(relwidth=1, relheight=1)
-        return label
-
-    ecran_selectionne = None
+    etat= {"ecran_selectionne": None}
     def charger_image(url):
         image = ctk.CTkImage(light_image=Image.open(url), size= (50,50))
         return image
@@ -39,21 +31,26 @@ def creer_parametre(app):
 
     def misajour_fondecran(chemin):
         global label_ecran1, label_ecran2
+        print("ecran =", etat["ecran_selectionne"])
+        print("label1 =", label_ecran1)
+        print("label2 =", label_ecran2)
 
-        if ecran_selectionne is None:
+        if etat["ecran_selectionne"] is None:
+            print("Aucun écran sélectionné")
             return
 
         chemin_complet = os.path.normpath(os.path.join(BASE_DIR, "..", chemin))
+        print("chemin_complet =", chemin_complet)  
 
         image_pil = PilImage.open(chemin_complet)
         image_ctk = ctk.CTkImage(light_image=image_pil, size=(400, 640))
 
-        if ecran_selectionne == 1 and label_ecran1:
+        if etat["ecran_selectionne"] == 1:
             label_ecran1.configure(image=image_ctk)
-            label_ecran1._image_ref = image_ctk 
-        elif ecran_selectionne == 2 and label_ecran2:
+        elif etat["ecran_selectionne"] == 2:
             label_ecran2.configure(image=image_ctk)
-            label_ecran2._image_ref = image_ctk
+        
+
 
     def changer_page(option):
         for widget in frame_contenu.winfo_children():
@@ -66,23 +63,18 @@ def creer_parametre(app):
             changer_application()
 
     def placer_fond():
-        ecran1 = charger_image("img/fondecran/ecran1.png")
-        placer_app(frame_contenu,ecran1,"img/fondecran/ecran1.png",2,0)
-
-        ecran2 = charger_image("img/fondecran/ecran2.png")
-        placer_app(frame_contenu,ecran2,"img/fondecran/ecran2.png",2,1)
-
-        ecran3 = charger_image("img/fondecran/ecran3.png")
-        placer_app(frame_contenu,ecran3,"img/fondecran/ecran3.png",3,0)
-
-        ecran4 = charger_image("img/fondecran/ecran4.png")
-        placer_app(frame_contenu,ecran4,"img/fondecran/ecran4.png",3,1)
-
-        ecran5 = charger_image("img/fondecran/ecran5.png")
-        placer_app(frame_contenu,ecran5,"img/fondecran/ecran5.png",4,0)
-
-        ecran6 = charger_image("img/fondecran/ecran6.png")
-        placer_app(frame_contenu,ecran6,"img/fondecran/ecran6.png",4,1)
+        fonds = [
+                ("img/fondecran/ecran1.png", 2, 0),
+                ("img/fondecran/ecran2.png", 2, 1),
+                ("img/fondecran/ecran3.png", 3, 0),
+                ("img/fondecran/ecran4.png", 3, 1),
+                ("img/fondecran/ecran5.png", 4, 0),
+                ("img/fondecran/ecran6.png", 4, 1),
+                ]
+        for chemin, ligne, colonne in fonds:
+            chemin_complet = os.path.normpath(os.path.join(BASE_DIR, "..", chemin))
+            icone = charger_image(chemin_complet)
+            placer_app(frame_contenu, icone, chemin, ligne, colonne)
 
 
     def changer_fondecran():
@@ -98,13 +90,13 @@ def creer_parametre(app):
         Label(frame_contenu, text="Applications", bg="#2b2b2b", fg="white",font=("Arial", 15)).grid(row=0, column=0, pady=20, padx=50)
 
     def recuperer_ecran(num):
-        global ecran_selectionne
+        
         if num == 1:
-            ecran_selectionne = 1
+            etat["ecran_selectionne"] = 1
             btn_ecran1.configure(fg_color="#555555")
             btn_ecran2.configure(fg_color="transparent")
         elif num == 2:
-            ecran_selectionne = 2
+            etat["ecran_selectionne"] = 2
             btn_ecran2.configure(fg_color="#555555")
             btn_ecran1.configure(fg_color="transparent")
             return 2
