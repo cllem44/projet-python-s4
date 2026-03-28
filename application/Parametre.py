@@ -5,7 +5,7 @@ import PIL.Image as PilImage
 import os
 # Changement fond d'ecran / Changement orga appli 
 
-def creer_parametre():
+def creer_parametre(app):
 
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
     label_ecran1 = None
@@ -133,9 +133,7 @@ def creer_parametre():
     frame_contenu.grid(row=0, column=1, sticky="nsew")
     frame_contenu.grid_propagate(False)
 
-    frame_barre = Frame(frame_parametre_general, height=60, bg="#c1c1c1")
-    frame_barre.grid(row=1, column=0, sticky="ew")
-    frame_barre.grid_propagate(False)
+    
 
     # --------Scrollbar---------------
     frame_option = ctk.CTkScrollableFrame(frame_haut, width=120, fg_color="#898989", scrollbar_button_color="#898989", scrollbar_button_hover_color="#707070")
@@ -150,21 +148,7 @@ def creer_parametre():
         btn.grid(row=i,column=0,pady=2,padx=5,sticky="ew")
 
 
-    frame_barre.grid_rowconfigure(0, weight=1)
-    frame_barre.grid_rowconfigure(1, weight=1)
-    frame_barre.grid_columnconfigure(0, weight=1)  
-    frame_barre.grid_columnconfigure(1, weight=1)  
-    frame_barre.grid_columnconfigure(2, weight=1)  
-    frame_barre.grid_columnconfigure(3, weight=1)  
-
-    buttoneteindre = ctk.CTkButton(master=frame_barre,text="Eteindre",width=80,height=40,border_width=0,corner_radius=4,hover=False)
-    buttoneteindre.grid(row=1, column=2, pady=2, sticky ="s")
-    buttondiminuer = ctk.CTkButton(master=frame_barre,text="-",width=60,height=10,fg_color="#c1c1c1",text_color="black",border_width=0,font=("Arial", 30),corner_radius=5,hover=False)
-    buttondiminuer.grid(row=0, column=1, padx=35, sticky ="w")
-    buttonprincipale = ctk.CTkButton(master=frame_barre,text="",width=55,height=55,border_width=0,corner_radius=30,hover=False)
-    buttonprincipale.grid(row=0, column=2, padx=42, sticky ="w")
-    buttonaugmenter = ctk.CTkButton(master=frame_barre,text="+",width=60,height=60,fg_color="#c1c1c1",text_color="black",border_width=0,font=("Arial", 30),corner_radius=0,hover=False)
-    buttonaugmenter.grid(row=0, column=3, padx=35, sticky ="w")
+    
     return frame_parametre_general
 
 if __name__ == "__main__":
