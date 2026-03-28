@@ -4,16 +4,9 @@ from PIL import Image
 import PIL.Image as PilImage
 import os
 # Changement fond d'ecran / Changement orga appli 
-app = ctk.CTk()
-app.title("Prototype")
-app.iconbitmap("img/logo.ico")
-app.geometry("400x700")
-app.resizable(width=False, height=False)
-app.grid_rowconfigure(0, weight=1)
-app.grid_rowconfigure(0, weight=1)
-app.grid_columnconfigure(0, weight=1)
-#def creer_parametre():
-def creer_parametre(app):
+
+def creer_parametre():
+
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
     label_ecran1 = None
     label_ecran2 = None
@@ -172,5 +165,19 @@ def creer_parametre(app):
     buttonprincipale.grid(row=0, column=2, padx=42, sticky ="w")
     buttonaugmenter = ctk.CTkButton(master=frame_barre,text="+",width=60,height=60,fg_color="#c1c1c1",text_color="black",border_width=0,font=("Arial", 30),corner_radius=0,hover=False)
     buttonaugmenter.grid(row=0, column=3, padx=35, sticky ="w")
-
     return frame_parametre_general
+
+if __name__ == "__main__":
+    app = ctk.CTk()
+    app.title("Prototype")
+    app.iconbitmap("img/logo.ico")
+    app.geometry("400x700")
+    app.resizable(width=False, height=False)
+    app.grid_rowconfigure(0, weight=1)
+    app.grid_columnconfigure(0, weight=1)
+    
+    # Appel pour tester l'écran individuellement
+    frame_parametre = creer_parametre(app)
+    frame_parametre.grid(row=0, column=0, sticky="nsew")
+    
+    app.mainloop()
