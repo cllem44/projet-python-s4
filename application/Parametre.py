@@ -8,12 +8,27 @@ import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 label_ecran1 = None
 label_ecran2 = None
-
+changer_delai = None
+diminuer = None
+augmenter= None
 def init_frames(l_ecran1, l_ecran2):
     global label_ecran1, label_ecran2
     label_ecran1 = l_ecran1
     label_ecran2 = l_ecran2
     #print(label_ecran1,label_ecran2)
+
+def init_economiseur(nouveau):
+    global changer_delai
+    changer_delai = nouveau
+
+def changer_delai(ms):
+    if changer_delai:
+        changer_delai(ms)
+
+def init_volume(cb_diminuer, cb_augmenter):
+    global diminuer, augmenter
+    diminuer = cb_diminuer
+    augmenter = cb_augmenter
 
 def creer_parametre(app):
     etat= {"ecran_selectionne": None}
@@ -31,16 +46,16 @@ def creer_parametre(app):
 
     def misajour_fondecran(chemin):
         global label_ecran1, label_ecran2
-        print("ecran =", etat["ecran_selectionne"])
-        print("label1 =", label_ecran1)
-        print("label2 =", label_ecran2)
+        #print("ecran =", etat["ecran_selectionne"])
+        #print("label1 =", label_ecran1)
+        #print("label2 =", label_ecran2)
 
         if etat["ecran_selectionne"] is None:
-            print("Aucun écran sélectionné")
+            msg_erreur.grid(row=5, column=0, pady=5, padx=10)
             return
-
+        msg_erreur.grid_remove()
         chemin_complet = os.path.normpath(os.path.join(BASE_DIR, "..", chemin))
-        print("chemin_complet =", chemin_complet)  
+        #print("chemin_complet =", chemin_complet)  
 
         image_pil = PilImage.open(chemin_complet)
         image_ctk = ctk.CTkImage(light_image=image_pil, size=(400, 640))
@@ -59,8 +74,11 @@ def creer_parametre(app):
         if option == "Fond d'ecrans":
             changer_fondecran()
 
-        elif option == "Applications":
-            changer_application()
+        elif option == "Economiseur":
+            changer_economiseur()
+
+        elif option == "Volume":
+            changer_volume()
 
     def placer_fond():
         fonds = [
@@ -78,17 +96,38 @@ def creer_parametre(app):
 
 
     def changer_fondecran():
-        global btn_ecran1,btn_ecran2
+        global btn_ecran1,btn_ecran2,msg_erreur
         Label(frame_contenu, text="Fond d'écrans", bg="#2b2b2b", fg="white",font=("Arial", 15)).grid(row=0, column=0, pady=20, padx =50)
         btn_ecran1 = ctk.CTkButton(master=frame_contenu,text="Ecran 1",height=40,width= 80,anchor="w",fg_color="transparent",text_color="white",border_width=0,corner_radius=10,hover=True,command=lambda:recuperer_ecran(1))
         btn_ecran1.grid(row=1,column=0,pady=2,padx=5)
         btn_ecran2 = ctk.CTkButton(master=frame_contenu,text="Ecran 2",height=40,width= 80,anchor="w",fg_color="transparent",text_color="white",border_width=0,corner_radius=10,hover=True,command=lambda:recuperer_ecran(2))
         btn_ecran2.grid(row=1,column=1,pady=2,padx=5)
+        msg_erreur = Label(frame_contenu, text="Aucun écran sélectionné", bg="#2b2b2b", fg="white",font=("Arial", 15))
+        msg_erreur.grid_remove()
         placer_fond()
 
-    def changer_application():
-        Label(frame_contenu, text="Applications", bg="#2b2b2b", fg="white",font=("Arial", 15)).grid(row=0, column=0, pady=20, padx=50)
+    def changer_economiseur():
+        Label(frame_contenu, text="Economiseur d'écran", bg="#2b2b2b", fg="white",font=("Arial", 15)).grid(row=0, column=0, pady=20, padx=50)
+        Label(frame_contenu, text="Délai d'inactivité", bg="#2b2b2b", fg="white",font=("Arial", 13)).grid(row=1, column=0, pady=20, padx=50)
+        label_valeur = Label(frame_contenu, text="30 sec", bg="#2b2b2b", fg="white",font=("Arial", 13))
+        label_valeur.grid(row=2, column=0)
 
+        def maj_delai(valeur):
+            secondes = int(float(valeur))
+            label_valeur.config(text=f"{secondes} sec")
+            changer_delai(secondes * 1000)  
+
+        slider = ctk.CTkSlider(frame_contenu, from_=10, to=120,command=maj_delai, width=200)
+        slider.set(30)  
+        slider.grid(row=3, column=0, pady=10, padx=10)
+    
+    def changer_volume():
+        Label(frame_contenu, text="Volume", bg="#2b2b2b", fg="white",font=("Arial", 15)).grid(row=0, column=0, pady=20, padx=50)       
+        btn_moins = ctk.CTkButton(frame_contenu, text="-", width=60, height=60,font=("Arial", 30), command=diminuer)
+        btn_moins.grid(row=1, column=0, padx=10, pady=20)
+
+        btn_plus = ctk.CTkButton(frame_contenu, text="+", width=60, height=60,font=("Arial", 30), command=augmenter)
+        btn_plus.grid(row=1, column=1, padx=10, pady=20)
     def recuperer_ecran(num):
         
         if num == 1:
@@ -133,7 +172,7 @@ def creer_parametre(app):
 
 
     # ----------Boutons Options ------------
-    options = ["Fond d'ecrans","Applications"]
+    options = ["Fond d'ecrans","Economiseur","Volume"]
     frame_option.grid_columnconfigure(0,weight=1)
     for i,option in enumerate(options):
         btn = ctk.CTkButton(master=frame_option,text=option,height=40,anchor="w",fg_color="transparent",text_color="white",border_width=0,corner_radius=10,hover=True,command=lambda o=option: changer_page(o))

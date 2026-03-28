@@ -12,9 +12,25 @@ from application.bloc_notes.Bloc_notes import creer_bloc_notes
 from application.GPS import creer_map
 from application.Parametre import creer_parametre
 from application.Parametre import init_frames
+from application.Parametre import init_economiseur
+from application.Parametre import init_volume
 
 debut_x = 0
 debut_y = 0
+timer_id = None
+Delai_inactivite = 30000
+
+def set_delai(ms):
+    global Delai_inactivite
+    Delai_inactivite = ms
+    reinitialiser_timer()  
+
+def reinitialiser_timer(event=None):
+    global timer_id
+    if timer_id:
+        app.after_cancel(timer_id)  
+    timer_id = app.after(Delai_inactivite, eteindretelephone)  
+
 
 def afficher_ecran(ancien_frame,nouveau_frame):
     global frame_actif
@@ -74,6 +90,15 @@ app.grid_rowconfigure(0, weight=1)  # écran principal
 app.grid_rowconfigure(1, weight=0)  # barre du bas
 app.grid_columnconfigure(0, weight=1)
 
+# Délai
+init_economiseur(set_delai)
+app.bind_all("<Any-KeyPress>", reinitialiser_timer)
+app.bind_all("<Any-Button>", reinitialiser_timer)
+app.bind_all("<Motion>", reinitialiser_timer)
+reinitialiser_timer()
+
+# Volume depuis parametre
+init_volume(diminuerson, augmenterson)
 
 # FRAMES 
 frame_ecran1, frame_ecran2, frame_verrouille, frame_barre = creer_frames(app)
@@ -89,11 +114,7 @@ label.bind("<ButtonRelease-1>", finswipe)
 label2.bind("<ButtonPress-1>", debutswipe)
 label2.bind("<ButtonRelease-1>", finswipe)
 
-
-
 #Applications
-
-
 
 frame_meteo = creer_meteo(app)
 frame_meteo.grid_remove()
