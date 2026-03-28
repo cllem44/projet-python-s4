@@ -10,7 +10,7 @@ from application.horloge import creer_horloge
 from application.Music import creer_music
 from application.bloc_notes.Bloc_notes import creer_bloc_notes
 from application.GPS import creer_map
-from application.Parametre import init_frames
+from application.Parametre import creer_parametre
 
 debut_x = 0
 debut_y = 0
@@ -129,6 +129,12 @@ frame_GPS.grid_remove()
 
 app_GPS = charger_image("img/app_map.png")
 placer_app(frame_ecran1,app_GPS, lambda: afficher_ecran(frame_actif, frame_GPS), 0, 1)
+
+frame_parametre = creer_parametre(app)
+frame_parametre.grid_remove()
+
+app_parametre = charger_image("img/app_parametre.png")
+placer_app(frame_ecran1,app_parametre, lambda: afficher_ecran(frame_actif, frame_parametre), 1, 1)
 
 
 
