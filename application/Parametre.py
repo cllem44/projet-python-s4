@@ -3,14 +3,19 @@ from tkinter import *
 from PIL import Image
 import PIL.Image as PilImage
 import os
+import screen_brightness_control as sbc
 # Changement fond d'ecran / Changement orga appli 
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 label_ecran1 = None
 label_ecran2 = None
 changer_delai = None
-diminuer = None
-augmenter= None
+diminuer_vol = None
+augmenter_vol = None
+luminosite = None
+barre_bas = None
+ecran_accueil = None
+
 def init_frames(l_ecran1, l_ecran2):
     global label_ecran1, label_ecran2
     label_ecran1 = l_ecran1
@@ -25,11 +30,33 @@ def changer_delai(ms):
     if changer_delai:
         changer_delai(ms)
 
-def init_volume(cb_diminuer, cb_augmenter):
-    global diminuer, augmenter
-    diminuer = cb_diminuer
-    augmenter = cb_augmenter
+def init_volume(diminuer, augmenter):
+    global diminuer_vol, augmenter_vol
+    diminuer_vol = diminuer
+    augmenter_vol = augmenter
 
+def init_luminosite(lum):
+    global luminosite
+    luminosite = lum
+
+def init_barrebas(frame_barre):
+    global barre_bas
+    barre_bas = frame_barre
+
+COULEURS = {
+    "Gris":     "#c1c1c1",
+    "Noir":     "#1a1a1a",
+    "Blanc":    "#ffffff",
+    "Bleu":     "#1a73e8",
+    "Rouge":    "#e53935",
+    "Vert":     "#43a047",
+    "Violet":   "#8e24aa",
+    "Orange":   "#fb8c00",
+}
+
+def init_ecran_accueil(ecran):
+    global ecran_accueil
+    ecran_accueil = ecran
 def creer_parametre(app):
     etat= {"ecran_selectionne": None}
     def charger_image(url):
@@ -79,6 +106,15 @@ def creer_parametre(app):
 
         elif option == "Volume":
             changer_volume()
+        
+        elif option == "Luminosite":
+            changer_luminosite()
+        
+        elif option == "Couleur Barre":
+            changer_barre()
+
+        elif option == "Écran d'accueil":
+            changer_ecran_accueil()
 
     def placer_fond():
         fonds = [
@@ -123,11 +159,54 @@ def creer_parametre(app):
     
     def changer_volume():
         Label(frame_contenu, text="Volume", bg="#2b2b2b", fg="white",font=("Arial", 15)).grid(row=0, column=0, pady=20, padx=50)       
-        btn_moins = ctk.CTkButton(frame_contenu, text="-", width=60, height=60,font=("Arial", 30), command=diminuer)
+        btn_moins = ctk.CTkButton(frame_contenu, text="-", width=60, height=60,font=("Arial", 30), command=diminuer_vol)
         btn_moins.grid(row=1, column=0, padx=10, pady=20)
 
-        btn_plus = ctk.CTkButton(frame_contenu, text="+", width=60, height=60,font=("Arial", 30), command=augmenter)
+        btn_plus = ctk.CTkButton(frame_contenu, text="+", width=60, height=60,font=("Arial", 30), command=augmenter_vol)
         btn_plus.grid(row=1, column=1, padx=10, pady=20)
+    
+    def changer_luminosite():
+        Label(frame_contenu, text="Luminosite", bg="#2b2b2b", fg="white",font=("Arial", 15)).grid(row=0, column=0, pady=20, padx=50)      
+        label_valeur = Label(frame_contenu, bg="#2b2b2b", fg="white",font=("Arial", 13))
+        label_valeur.grid(row=1, column=0)
+        def maj_luminosite(valeur):
+            txt = int(float(valeur))
+            label_valeur.config(text=f"{txt}%")
+            if luminosite:
+                luminosite(valeur)
+        luminosite_actuelle = sbc.get_brightness()[0]
+        slider = ctk.CTkSlider(frame_contenu,from_=0,to=100,command=maj_luminosite,width=200)
+        slider.set(luminosite_actuelle)
+        label_valeur.config(text=f"{luminosite_actuelle}%")
+        slider.grid(row=2,column=0,padx=10,pady=10)
+    
+    def changer_barre():
+        Label(frame_contenu, text="Couleur Barre", bg="#2b2b2b", fg="white",font=("Arial", 15)).grid(row=0, column=0, pady=20, padx=50)      
+        for i,(nom,hex) in enumerate(COULEURS.items()):
+            btn = ctk.CTkButton(master=frame_contenu,text=nom,width=100, height=35,fg_color=hex,text_color="white" if hex != "#ffffff" else "black",corner_radius=8,command=lambda h=hex: appliquer_couleur_barre(h))
+            btn.grid(row=1 + i // 2, column=i % 2, padx=8, pady=5)
+    def appliquer_couleur_barre(hex):
+        if barre_bas:
+            barre_bas.configure(bg=hex)
+            for widget in barre_bas.winfo_children():
+                try:
+                    widget.configure(fg_color=hex)
+                except:
+                    widget.configure(bg=hex)
+    
+    def changer_ecran_accueil():
+        Label(frame_contenu, text="Ecran d'accueil", bg="#2b2b2b", fg="white",font=("Arial", 15)).grid(row=0, column=0, pady=20, padx=50)      
+        def appliquer_ecran_acceuil(num):
+            if ecran_accueil:
+                ecran_accueil(num)
+            btn1.configure(fg_color="#555555" if num == 1 else "transparent")
+            btn2.configure(fg_color="#555555" if num == 2 else "transparent")           
+        btn1 = ctk.CTkButton(frame_contenu, text="Écran 1", width=100, height=40,fg_color="transparent", text_color="white",corner_radius=10, command=lambda: appliquer_ecran_acceuil(1))
+        btn1.grid(row=1, column=0, padx=8, pady=10)
+
+        btn2 = ctk.CTkButton(frame_contenu, text="Écran 2", width=100, height=40,fg_color="transparent", text_color="white",corner_radius=10, command=lambda: appliquer_ecran_acceuil(2))
+        btn2.grid(row=1, column=1, padx=8, pady=10)
+        
     def recuperer_ecran(num):
         
         if num == 1:
@@ -172,7 +251,7 @@ def creer_parametre(app):
 
 
     # ----------Boutons Options ------------
-    options = ["Fond d'ecrans","Economiseur","Volume"]
+    options = ["Fond d'ecrans","Economiseur","Volume","Luminosite","Couleur Barre","Écran d'accueil"]
     frame_option.grid_columnconfigure(0,weight=1)
     for i,option in enumerate(options):
         btn = ctk.CTkButton(master=frame_option,text=option,height=40,anchor="w",fg_color="transparent",text_color="white",border_width=0,corner_radius=10,hover=True,command=lambda o=option: changer_page(o))

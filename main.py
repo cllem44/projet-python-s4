@@ -14,6 +14,10 @@ from application.Parametre import creer_parametre
 from application.Parametre import init_frames
 from application.Parametre import init_economiseur
 from application.Parametre import init_volume
+from application.Parametre import init_luminosite
+from application.Parametre import init_barrebas
+from application.Parametre import init_ecran_accueil
+import screen_brightness_control as sbc
 
 debut_x = 0
 debut_y = 0
@@ -24,6 +28,9 @@ def set_delai(ms):
     global Delai_inactivite
     Delai_inactivite = ms
     reinitialiser_timer()  
+
+def set_luminosite(valeur):
+    sbc.set_brightness(int(float(valeur)))
 
 def reinitialiser_timer(event=None):
     global timer_id
@@ -41,8 +48,15 @@ def afficher_ecran(ancien_frame,nouveau_frame):
 def eteindretelephone():
     afficher_ecran(frame_actif,frame_verrouille)
 
+def set_ecran_accueil(num):
+    global ecran_accueil_ref
+    if num == 1:
+        ecran_accueil_ref = frame_ecran1
+    elif num == 2:
+        ecran_accueil_ref = frame_ecran2
+
 def ecranaccueil():
-    afficher_ecran(frame_actif,frame_ecran1)
+    afficher_ecran(frame_actif,ecran_accueil_ref)
 
 def debutswipe(event):
     global debut_x, debut_y
@@ -109,11 +123,15 @@ afficher_ecran(frame_ecran2,frame_ecran1)
 label = setup_fond(frame_ecran1,"img/fondecran/ecran1.png")
 label2 = setup_fond(frame_ecran2,"img/fondecran/ecran2.png")
 init_frames(label,label2)
+init_luminosite(set_luminosite)
+init_barrebas(frame_barre)
 label.bind("<ButtonPress-1>", debutswipe)
 label.bind("<ButtonRelease-1>", finswipe)
 label2.bind("<ButtonPress-1>", debutswipe)
 label2.bind("<ButtonRelease-1>", finswipe)
 
+ecran_accueil_ref = frame_ecran1
+init_ecran_accueil(set_ecran_accueil)
 #Applications
 
 frame_meteo = creer_meteo(app)
@@ -158,7 +176,5 @@ frame_parametre.grid_remove()
 
 app_parametre = charger_image("img/app_parametre.png")
 placer_app(frame_ecran1,app_parametre, lambda: afficher_ecran(frame_actif, frame_parametre), 1, 1)
-
-
 
 app.mainloop()

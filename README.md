@@ -6,4 +6,6 @@ installer comtypes dans l'invite de commande (pour volume pc): py -m pip install
 taille ecran : "400x700"
 #py -m pip install vstools
 installer pyglet pour musique : py -m pip install pyglet (peut etre 2 fois)
-py -m pip install meteofrance_api
+meteo : py -m pip install meteofrance_api
+horloge : py -m pip install DateTime
+parametre : py -m pip install screen-brightness-control
