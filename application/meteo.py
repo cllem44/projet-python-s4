@@ -48,7 +48,7 @@ def API_meteo(nom_ville):
 
 
 # ── Icône ─────────────────────────────────────────────────────────────────────
-def get_icon_image(code, taille=100):
+def get_icon_image(code, taille=100): 
     #print("code :", code)
 
     if not code:
@@ -110,7 +110,7 @@ def afficher_valeur():
         label_icon_jour.image = None
     # ── Jour + 1 ───────────────────────────────────────────────────────────────────
     try:
-        img_object = get_icon_image(liste_jours_desc[0][3], taille=150)
+        img_object = get_icon_image(liste_jours_desc[0][3], taille=110)
         #print('jour J1   icon ;',icon,"     img_object :",img_object)
         label_icon_jour_p1.config(image=img_object)
         label_icon_jour_p1.image = img_object
@@ -122,7 +122,7 @@ def afficher_valeur():
         label_icon_jour_p1.image = None
     # ── Jour + 2 ───────────────────────────────────────────────────────────────────
     try:
-        img_object = get_icon_image(liste_jours_desc[1][3], taille=150)
+        img_object = get_icon_image(liste_jours_desc[1][3], taille=110)
         #print('jour J2   icon ;',icon,"     img_object :",img_object)
         label_icon_jour_p2.config(image=img_object)
         label_icon_jour_p2.image = img_object 
@@ -135,7 +135,7 @@ def afficher_valeur():
 
     # ── Jour + 3 ───────────────────────────────────────────────────────────────────
     try:
-        img_object = get_icon_image(liste_jours_desc[2][3], taille=150)
+        img_object = get_icon_image(liste_jours_desc[2][3], taille=110)
         #print('jour J3   icon ;',icon,"     img_object :",img_object)
         label_icon_jour_p3.config(image=img_object)
         label_icon_jour_p3.image = img_object  
@@ -148,7 +148,7 @@ def afficher_valeur():
 
     # ── Jour + 4 ───────────────────────────────────────────────────────────────────
     try:
-        img_object = get_icon_image(liste_jours_desc[3][3], taille=150)
+        img_object = get_icon_image(liste_jours_desc[3][3], taille=110)
         #print('jour J4   icon ;',icon,"     img_object :",img_object)
         label_icon_jour_p4.config(image=img_object)
         label_icon_jour_p4.image = img_object  
@@ -161,7 +161,7 @@ def afficher_valeur():
 
     # ── Jour + 5 ───────────────────────────────────────────────────────────────────    
     try:
-        img_object = get_icon_image(liste_jours_desc[4][3], taille=150)
+        img_object = get_icon_image(liste_jours_desc[4][3], taille=110)
         #print('jour J5   icon ;',icon,"     img_object :",img_object)
         label_icon_jour_p5.config(image=img_object)
         label_icon_jour_p5.image = img_object  
@@ -182,52 +182,65 @@ def creer_meteo (app):
 
     frame_meteo = Frame(app, background="#2eafff")
     frame_meteo.grid(row=0, column=0, sticky="nsew")
+    frame_meteo.grid_propagate(False)
+
     frame_meteo.grid_columnconfigure(0, weight=1)
+    frame_meteo.grid_columnconfigure(1, weight=1)
+    frame_meteo.grid_columnconfigure(2, weight=1)
+    frame_meteo.grid_columnconfigure(3, weight=1)
+    frame_meteo.grid_columnconfigure(4, weight=1)
+    frame_meteo.grid_rowconfigure(0, weight=0)  # ville
+    frame_meteo.grid_rowconfigure(1, weight=0)  # champ
+    frame_meteo.grid_rowconfigure(2, weight=0)  # bouton
+    frame_meteo.grid_rowconfigure(3, weight=1)  # icone jour J (plus grande)
+    frame_meteo.grid_rowconfigure(4, weight=1)  # temp jour J
+    frame_meteo.grid_rowconfigure(5, weight=0)  # icones jours suivants
+    frame_meteo.grid_rowconfigure(6, weight=1)
 
     affiche_ville = Label( master=frame_meteo, text="Entrez une ville",fg="#FFFFFF", bg="#2eafff",font=("Arial", 20, "bold"))
-    affiche_ville.grid(column=0, row=0, sticky="n", pady=(15, 10),columnspan=5)
+    affiche_ville.grid(column=0, row=0, sticky="n", pady=2,columnspan=5)
 
     ville_champ = Entry(master=frame_meteo, bg="white", font=("Arial", 15), justify="center")
-    ville_champ.grid(column=0, row=1, sticky="n", pady=20, columnspan=5)
+    ville_champ.grid(column=0, row=1, sticky="n", pady=2, columnspan=5)
 
     bouton_valider = Button(master=frame_meteo, text="Rechercher", font=("Arial", 15), command=afficher_valeur)
     bouton_valider.grid(column=0, row=2, sticky="n", pady=5, columnspan=5)
 
     label_icon_jour = Label(master=frame_meteo, image="", bg="#2eafff")
-    label_icon_jour.grid(column=0, row=3, sticky="n", pady=20, columnspan=5)
+    label_icon_jour.grid(column=0, row=3, sticky="n", pady=2, columnspan=5)
 
     label_temp_J = Label(master=frame_meteo, text="", fg="#FFFFFF", bg="#2eafff", font=("Arial", 20))
-    label_temp_J.grid(column=0, row=4, sticky="n", pady=20, columnspan=5)
+    label_temp_J.grid(column=0, row=4, sticky="n", pady=2, columnspan=5)
 
     label_icon_jour_p1 = Label(master=frame_meteo, image="", bg="#2eafff")
-    label_icon_jour_p1.grid(column=0, row=5, sticky="n", pady=20,padx=5)
+    label_icon_jour_p1.grid(column=0, row=5, sticky="n", pady=2,padx=5)
 
     label_icon_jour_p2 = Label(master=frame_meteo, image="", bg="#2eafff")
-    label_icon_jour_p2.grid(column=1, row=5, sticky="n", pady=20,padx=5)
+    label_icon_jour_p2.grid(column=1, row=5, sticky="n", pady=2,padx=5)
 
     label_icon_jour_p3 = Label(master=frame_meteo, image="", bg="#2eafff")
-    label_icon_jour_p3.grid(column=2, row=5, sticky="n", pady=20,padx=5)
+    label_icon_jour_p3.grid(column=2, row=5, sticky="n", pady=2,padx=5)
 
     label_icon_jour_p4 = Label(master=frame_meteo, image="", bg="#2eafff")
-    label_icon_jour_p4.grid(column=3, row=5, sticky="n", pady=20,padx=5)
+    label_icon_jour_p4.grid(column=3, row=5, sticky="n", pady=2,padx=5)
 
     label_icon_jour_p5 = Label(master=frame_meteo, image="", bg="#2eafff")
-    label_icon_jour_p5.grid(column=4, row=5, sticky="n", pady=20,padx=5)
+    label_icon_jour_p5.grid(column=4, row=5, sticky="n", pady=2,padx=5)
 
     label_temp_J1 = Label(master=frame_meteo, text="", fg="#FFFFFF", bg="#2eafff", font=("Arial", 10))
-    label_temp_J1.grid(column=0, row=6, sticky="n", pady=10,padx=5)
+    label_temp_J1.grid(column=0, row=6, sticky="n", pady=1,padx=5)
 
     label_temp_J2 = Label(master=frame_meteo, text="", fg="#FFFFFF", bg="#2eafff", font=("Arial", 10))
-    label_temp_J2.grid(column=1, row=6, sticky="n", pady=10,padx=5)
+    label_temp_J2.grid(column=1, row=6, sticky="n", pady=1,padx=5)
 
     label_temp_J3 = Label(master=frame_meteo, text="", fg="#FFFFFF", bg="#2eafff", font=("Arial", 10))
-    label_temp_J3.grid(column=2, row=6, sticky="n", pady=10,padx=5)
+    label_temp_J3.grid(column=2, row=6, sticky="n", pady=1,padx=5)
 
     label_temp_J4 = Label(master=frame_meteo, text="", fg="#FFFFFF", bg="#2eafff", font=("Arial", 10))
-    label_temp_J4.grid(column=3, row=6, sticky="n", pady=10,padx=5)
+    label_temp_J4.grid(column=3, row=6, sticky="n", pady=1,padx=5)
 
     label_temp_J5 = Label(master=frame_meteo, text="", fg="#FFFFFF", bg="#2eafff", font=("Arial", 10))
-    label_temp_J5.grid(column=4, row=6, sticky="n", pady=10,padx=5)
+    label_temp_J5.grid(column=4, row=6, sticky="n", pady=1,padx=5)
     
     return frame_meteo
 
