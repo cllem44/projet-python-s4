@@ -101,25 +101,31 @@ def creer_music (app):
     frame_barre.grid(row=2, column=0, sticky="ew")
     frame_barre.grid_propagate(False)
 
-    options = ["Choississez votre dossier avec les musiques"]
-    choixdossier = ttk.Combobox(frame_music, values=options,width=50)
-
-    listeChanson = Listbox(frame_music,bg ='black',fg = "white",width=100, height = 100)
-    listeChanson.grid(row=1,column=0,padx=0,pady=0, sticky="ns")
+    
 
     icone_play = charger_image("img/musique/play.png")
     icone_pause = charger_image("img/musique/pause.png")
     icone_sup = charger_image("img/musique/superieur.png")
     icone_inf = charger_image("img/musique/inferieur.png")
 
+    listeChanson = Listbox(frame_music,bg ='black',fg = "white",width=100, height = 100)
+    listeChanson.grid(row=1,column=0,padx=0,pady=0, sticky="ns")
+
+    options = ["Choississez votre dossier avec les musiques"]
+    choixdossier = ttk.Combobox(frame_music, values=options,width=50)
+
     choixdossier.grid(row=0,column=0,padx=0,pady=0)
     choixdossier.bind("<<ComboboxSelected>>",lambda e: charger_musique())
+    
     buttonplay = ctk.CTkButton(master=frame_btnmusique,image=icone_play,text="",command=play,width=50,height=50,fg_color="transparent",border_width=0,corner_radius=0,hover=False)
     buttonplay.grid(row=0,column=1,padx=0,pady=0,sticky="w")
+    
     buttonpause = ctk.CTkButton(master=frame_btnmusique,image=icone_pause,text="",command=pause,width=50,height=50,fg_color="transparent",border_width=0,corner_radius=0,hover=False)
     buttonpause.grid(row=0,column=2,padx=0,pady=0,sticky="w")
+    
     buttonprecedent = ctk.CTkButton(master=frame_btnmusique,image=icone_inf,text="",command=precedent,width=50,height=50,fg_color="transparent",border_width=0,corner_radius=0,hover=False)
     buttonprecedent.grid(row=0,column=0,padx=0,pady=0,sticky="w")
+    
     buttonsuivant = ctk.CTkButton(master=frame_btnmusique,image=icone_sup,text="",command=suivant,width=50,height=50,fg_color="transparent",border_width=0,corner_radius=0,hover=False)
     buttonsuivant.grid(row=0,column=3,padx=0,pady=0,sticky="w")
 
