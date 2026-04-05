@@ -73,12 +73,18 @@ def creer_map(app):
     #Initialisation de la frame et des labels
     frame_latlng = Frame(app,background="#000000")
     frame_latlng.grid(row=0, column=0, sticky="nsew")
+    frame_latlng.grid_propagate(False)
 
+    frame_latlng.grid_columnconfigure(0, weight=1)
+    frame_latlng.grid_rowconfigure(0, weight=0)  # latitude
+    frame_latlng.grid_rowconfigure(1, weight=0)  # longitude
+    frame_latlng.grid_rowconfigure(2, weight=1)
+                                   
     label_latitude = Label(frame_latlng,background="#000000",fg = "white",font=("Calibri", 12,"bold"))
-    label_latitude.grid(row=0,column=0)
+    label_latitude.grid(row=0,column=0,sticky="ew")
 
     label_longitude = Label(frame_latlng,background="#000000",fg = "white",font=("Calibri", 12,"bold"))
-    label_longitude.grid(row=1,column=0)
+    label_longitude.grid(row=1,column=0,sticky="ew")
 
     update_position()
     list_coord = [(ltlng[0],ltlng[1])]
@@ -93,7 +99,7 @@ def creer_map(app):
     map_widget.add_right_click_menu_command(label="Suppimer chemin(s)",command=map_widget.delete_all_path)
     map_widget.add_right_click_menu_command(label="Distance 2 derniers points",command=display_distance)
     map_widget.add_left_click_map_command(left_click_event)
-    map_widget.grid(row=2,column=0)
+    map_widget.grid(row=2,column=0, sticky="nsew")
 
     return frame_latlng
 

@@ -7,6 +7,7 @@ from datetime import datetime
 
 def creer_horloge(app):
     global frame_Data
+    etat = {"timer_id": None}
 
     # Frame principale
     frame_horloge = Frame(app, background="#000000")
@@ -38,6 +39,9 @@ def creer_horloge(app):
     label_welcome.grid(row=0, column=0)
 
     def clear_clockapp():
+        if etat["timer_id"]:
+            app.after_cancel(etat["timer_id"])
+            etat["timer_id"] = None
         for w in frame_Data.winfo_children():
             w.destroy()
 
@@ -49,7 +53,7 @@ def creer_horloge(app):
         def refresh():
             current_time = dt.datetime.now().strftime("%H:%M:%S")
             label_Hour.config(text=current_time)
-            app.after(1000, refresh)
+            etat["timer_id"] = app.after(1000, refresh)
 
         refresh()
 
