@@ -21,7 +21,9 @@ def bataille_navale(app):
             self.frame_button_J1 = None
             self.frame_button_J2 = None
             self.nb_coup_solo = 0
-            
+            self.label_info = None
+            self.choix = None
+
         def creer_Grille(self,nb_j):
             taille = 8 if nb_j == 1 else 6
             return [['~' for _ in range(taille)]for _ in range (taille)]
@@ -98,7 +100,7 @@ def bataille_navale(app):
             texte,couleur = couleurs[resultat]
             boutons[x][y].config(text=texte,bg=couleur)
 
-            label_info.config(text=f'{resultat}\nTir(s) restants : {40-self.nb_coup_solo}')
+            self.label_info.config(text=f'{resultat}\nTir(s) restants : {40-self.nb_coup_solo}')
             if self.cpt_coule == 9:
                 self.victoire(0)
 
@@ -119,7 +121,7 @@ def bataille_navale(app):
             else:
                 self.tour_joueur = 1
                 #label_tour.config(text='Tour du joueur 1')
-            label_info.config(text=f'Résultat:{resultat}')
+            self.label_info.config(text=f'Résultat:{resultat}')
             self.changer_grille_active(activer_J2=(self.tour_joueur==2))
             if 9 in self.cpt_coule_duo:
                 self.victoire(self.cpt_coule_duo.index(9)+1)
@@ -134,12 +136,12 @@ def bataille_navale(app):
                     b.config(state=DISABLED if activer_J2 else NORMAL)
         
         def victoire(self,num_gagnant):
-            label_info.config(text=f'VICTOIRE {"JOUEUR " + str(num_gagnant) if num_gagnant else ""}!')
-            bouton_quitter = Button(Frame_Princ,text='QUITTER',bg='black',fg='blue',width=4,height=2,command=ecran_bienvenue)
+            self.label_info.config(text=f'VICTOIRE {"JOUEUR " + str(num_gagnant) if num_gagnant else ""}!')
+            bouton_quitter = Button(Frame_Princ,text='QUITTER',bg='black',fg='blue',width=6,height=2,command=ecran_bienvenue)
             bouton_quitter.grid(row=8,column=1)
 
         def defaite(self):
-            label_info.config(text=f'DEFAITE !')
+            self.label_info.config(text=f'DEFAITE !')
             bouton_quitter = Button(Frame_Princ,text='QUITTER',bg='black',fg='blue',width=6,height=2,command=ecran_bienvenue)
             bouton_quitter.grid(row=8,column=1,columnspan=2)
 
@@ -225,15 +227,20 @@ def bataille_navale(app):
     jeu = JeuBatailleNavale()
 
     def choix_nb_j():
-        if choix.get() == 'SOLO':
-            Frame_Bienvenue.destroy()
+        mode_choisi = jeu.choix.get()
+        for widget in Frame_Princ.winfo_children():
+            widget.destroy()
+        
+        jeu.__init__()
+        jeu.label_info = Label(Frame_Princ, background="#000000", fg="white", font=("Calibri", 12, "bold"))
+        jeu.label_info.grid(row=7, column=1)
+
+        if mode_choisi == 'SOLO':
             jeu.jeu_solo()
         else:
-            Frame_Bienvenue.destroy()
             jeu.jeu_duo(Frame_Princ)
 
     def ecran_bienvenue():
-        global Frame_Bienvenue,choix,label_info
         for widget in Frame_Princ.winfo_children():
             widget.destroy()
 
@@ -248,21 +255,21 @@ def bataille_navale(app):
         bouton_valider = Button(Frame_Bienvenue,text='VALIDER',bg='black',fg='blue',font=("Calibri", 12), width=10,command=choix_nb_j)
         bouton_valider.grid(row=4,column=1)
 
-        label_info = Label(Frame_Princ,background="#000000",fg = "white",font=("Calibri", 12,"bold"))
-        label_info.grid(row=7,column=1)
-        label_info.config(text='')
+        jeu.label_info = Label(Frame_Princ,background="#000000",fg = "white",font=("Calibri", 12,"bold"))
+        jeu.label_info.grid(row=7,column=1)
+        jeu.label_info.config(text='')
 
-        choix = StringVar()
+        jeu.choix = StringVar()
         i = 2
         for kchoix in ('SOLO','DUO'):
-            Radiobutton(Frame_Bienvenue,text=kchoix,value=kchoix,variable=choix,background="#000000",fg='blue',anchor="w",height=2).grid(row=i,column=1)
+            Radiobutton(Frame_Bienvenue,text=kchoix,value=kchoix,variable=jeu.choix,background="#000000",fg='blue',anchor="w",height=2).grid(row=i,column=1)
             i+=1
-        choix.set("SOLO")
+        jeu.choix.set(None)
 
         
 
     Frame_Princ = Frame(app,background="#000000")
-    Frame_Princ.pack()
+    Frame_Princ.grid(row=0,column=0)
 
     Frame_Bienvenue = Frame(Frame_Princ,background="#000000")
     Frame_Bienvenue.grid(row=2,column=1)
@@ -271,18 +278,18 @@ def bataille_navale(app):
     label_bienvenue.config(text='Bienvenue dans le jeu de bataille navale')
     label_bienvenue.grid(row=0,column=1)
 
-    label_info = Label(Frame_Princ,background="#000000",fg = "white",font=("Calibri", 12,"bold"))
-    label_info.grid(row=7,column=1)
+    jeu.label_info = Label(Frame_Princ,background="#000000",fg = "white",font=("Calibri", 12,"bold"))
+    jeu.label_info.grid(row=7,column=1)
 
 
     bouton_valider = Button(Frame_Bienvenue,text='VALIDER',bg='black',fg='blue',font=("Calibri", 12), width=10,command=choix_nb_j)
     bouton_valider.grid(row=4,column=1)
 
-    choix = StringVar()
+    jeu.choix = StringVar()
     i = 2
     for kchoix in ('SOLO','DUO'):
-        Radiobutton(Frame_Bienvenue,text=kchoix,value=kchoix,variable=choix,background="#000000",fg='blue',anchor="w",height=2).grid(row=i,column=1)
+        Radiobutton(Frame_Bienvenue,text=kchoix,value=kchoix,variable=jeu.choix,background="#000000",fg='blue',anchor="w",height=2).grid(row=i,column=1)
         i+=1
-    choix.set("SOLO")
+    jeu.choix.set(None)
 
     return Frame_Princ

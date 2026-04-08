@@ -17,6 +17,7 @@ from application.Parametre import init_volume
 from application.Parametre import init_luminosite
 from application.Parametre import init_barrebas
 from application.Parametre import init_ecran_accueil
+from application.bataille_navale import bataille_navale
 import screen_brightness_control as sbc
 
 debut_x = 0
@@ -159,12 +160,12 @@ frame_bloc_notes.grid_remove()
 app_bloc_notes = charger_image("img/app_bloc_note.png")
 placer_app(frame_ecran1, app_bloc_notes, lambda: afficher_ecran(frame_actif, frame_bloc_notes), 2, 1)
 
-'''frame_bataille_navale= creer_bataille_navale(app)
+frame_bataille_navale= bataille_navale(app)
 frame_bataille_navale.grid_remove()
 
 app_bataille_navale = charger_image("img/app_bataille_navale.png")
-placer_app(frame_ecran1, app_bataille_navale, lambda: afficher_ecran(frame_actif, frame_bataille_navale), 2, 1)
-'''
+placer_app(frame_ecran1, app_bataille_navale, lambda: afficher_ecran(frame_actif, frame_bataille_navale), 0, 2)
+
 frame_GPS = creer_map(app)
 frame_GPS.grid_remove()
 
