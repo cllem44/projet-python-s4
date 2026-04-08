@@ -1,7 +1,7 @@
 from tkinter import *
 from random import randint
 
-def bataille_navale():
+def bataille_navale(app):
     class JeuBatailleNavale:
         #classe définie pour éviter un nombre de variables globales importantes
         def __init__(self):
@@ -261,15 +261,7 @@ def bataille_navale():
 
         
 
-    #----Interface-----
-
-    fenetre = Tk()
-    fenetre.title("MAP")
-    fenetre.iconbitmap("img/logo.ico")
-    fenetre.geometry("400x640")
-    fenetre.config(background="#000000")
-
-    Frame_Princ = Frame(fenetre,background="#000000")
+    Frame_Princ = Frame(app,background="#000000")
     Frame_Princ.pack()
 
     Frame_Bienvenue = Frame(Frame_Princ,background="#000000")
@@ -293,8 +285,4 @@ def bataille_navale():
         i+=1
     choix.set("SOLO")
 
-
-
-    fenetre.mainloop()
-
-"""Avancement: jeu fini !, rajouter une limite de coup dans le mode solo"""
+    return Frame_Princ
