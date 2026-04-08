@@ -17,10 +17,16 @@ def creer_map(app):
     def update_position():
         global ltlng        
         ltlng = get_position()
+        
+        if ltlng is None:
+            ltlng = [48.8566, 2.3522]  # Paris par défaut
+            print("Position indisponible, utilisation de Paris par défaut")
+
+        list_coord = [(ltlng[0], ltlng[1])]
         if ltlng:
             label_latitude.config(text=f'Votre latitude: {ltlng[0]}')
             label_longitude.config(text=f'Votre longitude: {ltlng[1]}')
-        app.after(1000,update_position)
+        app.after(60000,update_position)
 
     #Permet de calculer la distance entre les deux derniers points placés grâce à la loi des sinus
     def distance_last_point(list_coord):
