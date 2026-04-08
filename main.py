@@ -10,6 +10,7 @@ from application.horloge import creer_horloge
 from application.Music import creer_music
 from application.bloc_notes.Bloc_notes import creer_bloc_notes
 from application.GPS import creer_map
+from application.Morpion import creer_morpion
 from application.Parametre import creer_parametre
 from application.Parametre import init_frames
 from application.Parametre import init_economiseur
@@ -177,5 +178,11 @@ frame_parametre.grid_remove()
 
 app_parametre = charger_image("img/app_parametre.png")
 placer_app(frame_ecran1,app_parametre, lambda: afficher_ecran(frame_actif, frame_parametre), 1, 1)
+
+frame_morpion = creer_morpion(app)
+frame_morpion.grid_remove()
+
+app_morpion = charger_image("img/app_morpion.png")
+placer_app(frame_ecran2,app_morpion, lambda: afficher_ecran(frame_actif, frame_morpion), 0, 0)
 
 app.mainloop()
