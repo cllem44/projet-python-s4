@@ -5,8 +5,8 @@ from Frame_ecranprincipal import *
 from application.Music import *
 from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
 from comtypes import CLSCTX_ALL
-from application.meteo import creer_meteo
-from application.horloge import creer_horloge
+from application.Meteo import creer_meteo
+from application.Horloge import creer_horloge
 from application.Music import creer_music
 from application.bloc_notes.Bloc_notes import creer_bloc_notes
 from application.GPS import creer_map
