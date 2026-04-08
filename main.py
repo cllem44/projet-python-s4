@@ -9,9 +9,35 @@ from application.meteo import creer_meteo
 from application.horloge import creer_horloge
 from application.Music import creer_music
 from application.bloc_notes.Bloc_notes import creer_bloc_notes
+from application.GPS import creer_map
+from application.Parametre import creer_parametre
+from application.Parametre import init_frames
+from application.Parametre import init_economiseur
+from application.Parametre import init_volume
+from application.Parametre import init_luminosite
+from application.Parametre import init_barrebas
+from application.Parametre import init_ecran_accueil
+import screen_brightness_control as sbc
 
 debut_x = 0
 debut_y = 0
+timer_id = None
+Delai_inactivite = 30000
+
+def set_delai(ms):
+    global Delai_inactivite
+    Delai_inactivite = ms
+    reinitialiser_timer()  
+
+def set_luminosite(valeur):
+    sbc.set_brightness(int(float(valeur)))
+
+def reinitialiser_timer(event=None):
+    global timer_id
+    if timer_id:
+        app.after_cancel(timer_id)  
+    timer_id = app.after(Delai_inactivite, eteindretelephone)  
+
 
 def afficher_ecran(ancien_frame,nouveau_frame):
     global frame_actif
@@ -22,8 +48,15 @@ def afficher_ecran(ancien_frame,nouveau_frame):
 def eteindretelephone():
     afficher_ecran(frame_actif,frame_verrouille)
 
+def set_ecran_accueil(num):
+    global ecran_accueil_ref
+    if num == 1:
+        ecran_accueil_ref = frame_ecran1
+    elif num == 2:
+        ecran_accueil_ref = frame_ecran2
+
 def ecranaccueil():
-    afficher_ecran(frame_actif,frame_ecran1)
+    afficher_ecran(frame_actif,ecran_accueil_ref)
 
 def debutswipe(event):
     global debut_x, debut_y
@@ -71,6 +104,15 @@ app.grid_rowconfigure(0, weight=1)  # écran principal
 app.grid_rowconfigure(1, weight=0)  # barre du bas
 app.grid_columnconfigure(0, weight=1)
 
+# Délai
+init_economiseur(set_delai)
+app.bind_all("<Any-KeyPress>", reinitialiser_timer)
+app.bind_all("<Any-Button>", reinitialiser_timer)
+app.bind_all("<Motion>", reinitialiser_timer)
+reinitialiser_timer()
+
+# Volume depuis parametre
+init_volume(diminuerson, augmenterson)
 
 # FRAMES 
 frame_ecran1, frame_ecran2, frame_verrouille, frame_barre = creer_frames(app)
@@ -78,18 +120,19 @@ setup_frames(frame_barre,eteindretelephone,diminuerson,augmenterson,ecranaccueil
 afficher_ecran(frame_ecran2,frame_ecran1)
 
 # Fond d'écrans
-label = setup_fond(frame_ecran1,"img/ecran1.png")
-label2 = setup_fond(frame_ecran2,"img/ecran2.png")
+label = setup_fond(frame_ecran1,"img/fondecran/ecran1.png")
+label2 = setup_fond(frame_ecran2,"img/fondecran/ecran2.png")
+init_frames(label,label2)
+init_luminosite(set_luminosite)
+init_barrebas(frame_barre)
 label.bind("<ButtonPress-1>", debutswipe)
 label.bind("<ButtonRelease-1>", finswipe)
 label2.bind("<ButtonPress-1>", debutswipe)
 label2.bind("<ButtonRelease-1>", finswipe)
 
-
-
+ecran_accueil_ref = frame_ecran1
+init_ecran_accueil(set_ecran_accueil)
 #Applications
-
-
 
 frame_meteo = creer_meteo(app)
 frame_meteo.grid_remove()
@@ -113,9 +156,25 @@ placer_app(frame_ecran1, app_musique, lambda: afficher_ecran(frame_actif, frame_
 frame_bloc_notes = creer_bloc_notes(app)
 frame_bloc_notes.grid_remove()
 
-app_bloc_notes = charger_image("img/app_musique.png")
+app_bloc_notes = charger_image("img/app_bloc_note.png")
 placer_app(frame_ecran1, app_bloc_notes, lambda: afficher_ecran(frame_actif, frame_bloc_notes), 2, 1)
 
+'''frame_bataille_navale= creer_bataille_navale(app)
+frame_bataille_navale.grid_remove()
 
+app_bataille_navale = charger_image("img/app_bataille_navale.png")
+placer_app(frame_ecran1, app_bataille_navale, lambda: afficher_ecran(frame_actif, frame_bataille_navale), 2, 1)
+'''
+frame_GPS = creer_map(app)
+frame_GPS.grid_remove()
+
+app_GPS = charger_image("img/app_map.png")
+placer_app(frame_ecran1,app_GPS, lambda: afficher_ecran(frame_actif, frame_GPS), 0, 1)
+
+frame_parametre = creer_parametre(app)
+frame_parametre.grid_remove()
+
+app_parametre = charger_image("img/app_parametre.png")
+placer_app(frame_ecran1,app_parametre, lambda: afficher_ecran(frame_actif, frame_parametre), 1, 1)
 
 app.mainloop()

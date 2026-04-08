@@ -34,13 +34,13 @@ def setup_frames(frame_barre, eteindretelephone, diminuerson, augmenterson, ecra
     frame_barre.rowconfigure(1, weight=1)
     
     #Buttons
-    buttoneteindre = ctk.CTkButton(master=frame_barre,text="Eteindre",command=eteindretelephone,width=80,height=40,border_width=0,corner_radius=4,hover=False)
+    buttoneteindre = ctk.CTkButton(master=frame_barre,text="Eteindre",command=eteindretelephone,width=80,height=40,fg_color="#c1c1c1",text_color="black",border_width=0,corner_radius=4,hover=False)
     buttoneteindre.grid(row=1, column=2, pady=2, sticky ="s")
     
     buttondiminuer = ctk.CTkButton(master=frame_barre,text="-",command=diminuerson,width=60,height=10,fg_color="#c1c1c1",text_color="black",border_width=0,font=("Arial", 30),corner_radius=5,hover=False)
     buttondiminuer.grid(row=0, column=1, padx=35, sticky ="w")
     
-    buttonprincipale = ctk.CTkButton(master=frame_barre,text="",command=ecranaccueil,width=55,height=55,border_width=0,corner_radius=30,hover=False)
+    buttonprincipale = ctk.CTkButton(master=frame_barre,text="⬤",command=ecranaccueil,width=155,height=55,fg_color="#c1c1c1",text_color="black",border_width=0,font=("Arial", 60),corner_radius=30,hover=False)
     buttonprincipale.grid(row=0, column=2, padx=42, sticky ="w")
     
     buttonaugmenter = ctk.CTkButton(master=frame_barre,text="+",command=augmenterson,width=60,height=60,fg_color="#c1c1c1",text_color="black",border_width=0,font=("Arial", 30),corner_radius=0,hover=False)
@@ -51,5 +51,5 @@ def placer_app(frame,icone,lancerapp,ligne,colonne):
     frame.rowconfigure((0,1,2,3), weight=1)
 
     #Applications
-    buttonapp = ctk.CTkButton(master=frame,image=icone,text="",command=lancerapp,width=50,height=50,fg_color="transparent",border_width=0,corner_radius=0,hover=False)
+    buttonapp = ctk.CTkButton(master=frame,image=icone,text="",command=lancerapp,width=50,height=50,fg_color="transparent",bg_color="transparent",border_width=0,corner_radius=0,hover=False)
     buttonapp.grid(row=ligne,column=colonne,padx=10,pady=10,sticky="w")
