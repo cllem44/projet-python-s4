@@ -3,6 +3,9 @@ from tkinter import *
 from tkinter import filedialog, ttk, messagebox
 import os
 
+# ── Creer frame ───────────────────────────────────────────────────────
+
+
 def creer_bloc_notes(app):
 
     def creer_note(nom_note):
@@ -73,43 +76,30 @@ def creer_bloc_notes(app):
 
     # ── Colonne gauche : création + liste ──────────────────────────────────────
 
-    # Champ nom
-    nom_bloc_note_champ = Entry(master=frame_bloc_note, bg="white",
-                                font=("Arial", 11), justify="center")
+  
+    nom_bloc_note_champ = Entry(master=frame_bloc_note, bg="white",font=("Arial", 11), justify="center")
     nom_bloc_note_champ.grid(column=0, row=0, sticky="ew", padx=10, pady=(10, 3))
 
-    # Bouton créer
-    bouton_valider = Button(master=frame_bloc_note, text="+ Créer",
-                            font=("Arial", 10), command=afficher_valeur,
-                            bg="#6d1f1f", fg="white", relief="flat")
+    bouton_valider = Button(master=frame_bloc_note, text="+ Créer",font=("Arial", 10), command=afficher_valeur,bg="#6d1f1f", fg="white", relief="flat")
     bouton_valider.grid(column=0, row=1, sticky="ew", padx=10, pady=(0, 5))
 
-    # Liste des notes
-    liste_notes = Listbox(master=frame_bloc_note, font=("Arial", 11),
-                          bg="white", selectbackground="#c0392b",
-                          selectforeground="white", relief="flat")
+    liste_notes = Listbox(master=frame_bloc_note, font=("Arial", 11),bg="white", selectbackground="#c0392b",selectforeground="white", relief="flat")
     liste_notes.grid(column=0, row=2, sticky="nsew", padx=10, pady=(0, 5))
     liste_notes.bind("<<ListboxSelect>>", on_selection)
 
-    # Boutons sauvegarder / supprimer
     frame_boutons = Frame(frame_bloc_note, bg="#962F2F")
     frame_boutons.grid(column=0, row=3, sticky="ew", padx=10, pady=(0, 10))
     frame_boutons.grid_columnconfigure(0, weight=1)
     frame_boutons.grid_columnconfigure(1, weight=1)
 
-    bouton_save = Button(master=frame_boutons, text="💾",
-                         font=("Arial", 13), command=sauvegarder_note,
-                         bg="#6d1f1f", fg="white", relief="flat")
+    bouton_save = Button(master=frame_boutons, text="💾",font=("Arial", 13), command=sauvegarder_note,bg="#6d1f1f", fg="white", relief="flat")
     bouton_save.grid(row=0, column=0, sticky="ew", padx=(0, 2))
 
-    bouton_suppr = Button(master=frame_boutons, text="🗑",
-                          font=("Arial", 13), command=supprimer_note,
-                          bg="#4a0f0f", fg="white", relief="flat")
+    bouton_suppr = Button(master=frame_boutons, text="🗑",font=("Arial", 13), command=supprimer_note,bg="#4a0f0f", fg="white", relief="flat")
     bouton_suppr.grid(row=0, column=1, sticky="ew", padx=(2, 0))
 
     
-    label_note_active = Label(frame_bloc_note, text="Aucune note ouverte",
-                              bg="#962F2F", fg="white", font=("Arial", 10, "italic"))
+    label_note_active = Label(frame_bloc_note, text="Aucune note ouverte",bg="#962F2F", fg="white", font=("Arial", 10, "italic"))
     label_note_active.grid(column=1, row=0, sticky="w", padx=(0, 10), pady=(10, 0))
 
     cadre_texte = Frame(frame_bloc_note, bg="#962F2F")
@@ -120,8 +110,7 @@ def creer_bloc_notes(app):
     scroll_v = Scrollbar(cadre_texte, orient="vertical")
     scroll_v.grid(row=0, column=1, sticky="ns")
 
-    zone_texte = Text(cadre_texte, font=("Arial", 11), wrap="word",
-                      undo=True, relief="flat", yscrollcommand=scroll_v.set)
+    zone_texte = Text(cadre_texte, font=("Arial", 11), wrap="word",undo=True, relief="flat", yscrollcommand=scroll_v.set)
     zone_texte.grid(row=0, column=0, sticky="nsew")
     scroll_v.config(command=zone_texte.yview)
 

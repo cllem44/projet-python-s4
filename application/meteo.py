@@ -86,7 +86,8 @@ def get_icon_image(code, taille=100):
     chemin = f"img/meteo/{icon_name}.png"
     image = Image.open(chemin).resize((taille, taille))
     return ImageTk.PhotoImage(image)
-# ── Actions ───────────────────────────────────────────────────────────────────
+
+# ── Mise a jour des variable  ───────────────────────────────────────────────────────────────────
 
 def afficher_valeur():
     valeur_saisie = ville_champ.get()
@@ -175,7 +176,6 @@ def afficher_valeur():
 
 # ── Interface ─────────────────────────────────────────────────────────────────
 
-""""""
 def creer_meteo (app):
     global ville_champ,affiche_ville,label_temp_J,label_temp_J1,label_temp_J2,label_temp_J3,label_temp_J4,label_temp_J5,label_icon_jour,label_icon_jour_p1,label_icon_jour_p2,label_icon_jour_p3,label_icon_jour_p4,label_icon_jour_p5
     
