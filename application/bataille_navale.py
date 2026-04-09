@@ -13,6 +13,7 @@ def bataille_navale(app):
             self.bateaux_J2 = None
             self.boutons_J1 = None
             self.boutons_J2 = None
+            self.boutons = None
             self.tour_joueur = 1
             self.cpt_coule = 0
             self.cpt_coule_duo = [0, 0]
@@ -24,6 +25,7 @@ def bataille_navale(app):
             self.label_info = None
             self.choix = None
 
+        #Creer une grille 8x8 ou 6x6 en fonction du nombre de joueur       
         def creer_Grille(self,nb_j):
             taille = 8 if nb_j == 1 else 6
             return [['~' for _ in range(taille)]for _ in range (taille)]
@@ -49,6 +51,7 @@ def bataille_navale(app):
             
             return bateau
         
+        #Vérifie si des bateaux se chevauchent et les replacent au cas ou
         def verifier_Bateaux(self,b2,b3,b4,taille_grille):
             for val in b3:
                 if val in b2:
@@ -60,6 +63,7 @@ def bataille_navale(app):
             
             return b2,b3,b4
         
+        #Vérifie si un bateau est coulé et incrémente le compteur de cases touchées en fonction du mode de jeu
         def est_Coule(self,bateau,grille,mode):
             if mode == 'DUO':
                 self.cpt_coule_duo[self.tour_joueur-1]+=1
@@ -68,6 +72,7 @@ def bataille_navale(app):
             
             return all(grille[x][y]=='+' for x,y in bateau)
         
+        #Vérifie si le tir est coulé, touché ou raté
         def verifier_tir(self,tir,grille,bateaux,boutons):
             for bateau in bateaux.values():
                 if tir in bateau:              
@@ -81,6 +86,7 @@ def bataille_navale(app):
             grille[tir[0]][tir[1]] = 'o'
             return 'Raté'
 
+        #Vérifie si le joueur a perdu, actualise le nombre de coup(s) restant(s), change la couleur et le symbole sur la case cliquée
         def tirer_case_solo(self,x,y,boutons):
             if self.nb_coup_solo >= 40:
                 self.defaite()
@@ -104,6 +110,7 @@ def bataille_navale(app):
             if self.cpt_coule == 9:
                 self.victoire(0)
 
+        #Même rôle que la fonction précédente mais en mode duo, avec ajout de l'alternance du tour des joueurs
         def tirer_case_duo(self,x,y,boutons,grille_cible,bateaux_cible):
             tir = [x,y]
 
@@ -117,15 +124,16 @@ def bataille_navale(app):
 
             if self.tour_joueur == 1:
                 self.tour_joueur = 2
-                #label_tour.config(text='Tour du joueur 2')
+                
             else:
                 self.tour_joueur = 1
-                #label_tour.config(text='Tour du joueur 1')
+
             self.label_info.config(text=f'Résultat:{resultat}')
             self.changer_grille_active(activer_J2=(self.tour_joueur==2))
             if 9 in self.cpt_coule_duo:
                 self.victoire(self.cpt_coule_duo.index(9)+1)
-
+        
+        #Change la grille active en fonction du joueur courant
         def changer_grille_active(self,activer_J2):
             for ligne in self.boutons_J1:
                 for b in ligne:
@@ -135,12 +143,32 @@ def bataille_navale(app):
                 for b in ligne:
                     b.config(state=DISABLED if activer_J2 else NORMAL)
         
+        #Désactive les boutons pour ne pas cliquer dessus en cas de victoire et affiche le vainqueur
         def victoire(self,num_gagnant):
+            if num_gagnant == 1 or num_gagnant == 2:
+                for ligne in self.boutons_J1:
+                    for b in ligne:
+                        b.config(state=DISABLED)
+            
+                for ligne in self.boutons_J2:
+                    for b in ligne:
+                        b.config(state=DISABLED)
+            
+            else:
+                for ligne in self.boutons:
+                    for b in ligne:
+                        b.config(state=DISABLED)
+            
+
             self.label_info.config(text=f'VICTOIRE {"JOUEUR " + str(num_gagnant) if num_gagnant else ""}!')
             bouton_quitter = Button(Frame_Princ,text='QUITTER',bg='black',fg='blue',width=6,height=2,command=ecran_bienvenue)
             bouton_quitter.grid(row=8,column=1)
 
+        #Même chose que la victoire mais avec la défaite
         def defaite(self):
+            for ligne in self.boutons:
+                for b in ligne:
+                    b.config(state=DISABLED)
             self.label_info.config(text=f'DEFAITE !')
             bouton_quitter = Button(Frame_Princ,text='QUITTER',bg='black',fg='blue',width=6,height=2,command=ecran_bienvenue)
             bouton_quitter.grid(row=8,column=1,columnspan=2)
@@ -166,18 +194,20 @@ def bataille_navale(app):
             self.bateaux_J2 = {'bateaux2':b2_J2,'bateaux3':b3_J2,'bateaux4':b4_J2}
             self.creer_plateaux_duo(frame)
         
+        #Crée le plateau en mode solo
         def creer_plateau_solo(self):
-            boutons = []
+            self.boutons = []
             self.frame_button = Frame(Frame_Princ,background='#000000')
             self.frame_button.grid(row=1,column=1)
             for i in range(8):
                 ligne = []
                 for j in range(8):
-                    b=Button(self.frame_button,text='~',bg='black',fg='white',width=4,height=2,command=lambda x=i,y=j:self.tirer_case_solo(x,y,boutons))
+                    b=Button(self.frame_button,text='~',bg='black',fg='white',width=4,height=2,command=lambda x=i,y=j:self.tirer_case_solo(x,y,self.boutons))
                     b.grid(row=i,column=j)
                     ligne.append(b)
-                boutons.append(ligne)
+                self.boutons.append(ligne)
         
+        #Crée le plateau des deux joueurs en mode duo
         def creer_plateaux_duo(self,frame):
             self.boutons_J1 = []
             self.boutons_J2 = []
@@ -210,22 +240,10 @@ def bataille_navale(app):
     
             self.changer_grille_active(activer_J2=False)
         
-        def creer_boutons(self,frame,grille_cible,bateaux_cible,ligne):
-            boutons = []
-            f = Frame(frame,background='#000000')
-            f.grid(row = ligne,column=1)
-
-            for i in range(6):
-                l = []
-                for j in range(6):
-                        b=Button(f,text='~',bg='black',fg='white',width=4,height=2,command=lambda x=i,y=j,g=grille_cible,d=bateaux_cible:self.tirer_case_duo(x,y,boutons,g,d))
-                        b.grid(row=i,column=j)
-                        l.append(b)
-                boutons.append(l)
-            return boutons
 
     jeu = JeuBatailleNavale()
 
+    #Défini le mode de jeu
     def choix_nb_j():
         mode_choisi = jeu.choix.get()
         for widget in Frame_Princ.winfo_children():
@@ -240,6 +258,7 @@ def bataille_navale(app):
         else:
             jeu.jeu_duo(Frame_Princ)
 
+    #Affiche l'écran de bienvenue
     def ecran_bienvenue():
         for widget in Frame_Princ.winfo_children():
             widget.destroy()
