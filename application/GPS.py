@@ -19,10 +19,10 @@ def creer_map(app):
         ltlng = get_position()
         
         if ltlng is None:
-            ltlng = [48.8566, 2.3522]  # Paris par défaut
+            ltlng = (48.8566, 2.3522)  # Paris par défaut
             print("Position indisponible, utilisation de Paris par défaut")
+        #list_coord = [(ltlng[0], ltlng[1])]
 
-        list_coord = [(ltlng[0], ltlng[1])]
         if ltlng:
             label_latitude.config(text=f'Votre latitude: {ltlng[0]}')
             label_longitude.config(text=f'Votre longitude: {ltlng[1]}')
