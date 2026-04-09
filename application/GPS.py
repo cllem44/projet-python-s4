@@ -13,14 +13,18 @@ def creer_map(app):
         g = geocoder.ip('me')
         return g.latlng
 
-    #rafraîchit la position de l'utilisateur toutes les secondes
+    #rafraîchit la position de l'utilisateur toutes les Minutes
     def update_position():
         global ltlng        
         ltlng = get_position()
-        if ltlng:
+        if ltlng is None:
+            ltlng = (48.8566,2.3522)
             label_latitude.config(text=f'Votre latitude: {ltlng[0]}')
             label_longitude.config(text=f'Votre longitude: {ltlng[1]}')
-        app.after(1000,update_position)
+        else:
+            label_latitude.config(text=f'Votre latitude: {ltlng[0]}')
+            label_longitude.config(text=f'Votre longitude: {ltlng[1]}')
+        app.after(60000,update_position)
 
     #Permet de calculer la distance entre les deux derniers points placés grâce à la loi des sinus
     def distance_last_point(list_coord):
@@ -41,9 +45,10 @@ def creer_map(app):
 
     #Ajoute les nouveaux markers et les relie entre eux en partant de la position départ
     def add_marker_path(coords):
-        global path_1
+        nonlocal path_1
+        global list_coord
         
-        path_1=None
+        
         list_coord.append((coords[0],coords[1]))
         map_widget.set_marker(coords[0],coords[1],text="Nouveau point")
 
@@ -61,6 +66,14 @@ def creer_map(app):
         label_latitude.config(text='')
         label_longitude.config(text='')
         label_latitude.config(text=f'Distance deux derniers points : {distance_last_point(list_coord)} km')
+
+    def delete_marker():
+        global list_coord
+
+        map_widget.delete_all_marker()
+        list_coord = [(ltlng[0],ltlng[1])]
+        map_widget.set_marker(list_coord[0][0],list_coord[0][1],text="Départ")
+
        
 
 
@@ -86,16 +99,16 @@ def creer_map(app):
     label_longitude = Label(frame_latlng,background="#000000",fg = "white",font=("Calibri", 12,"bold"))
     label_longitude.grid(row=1,column=0,sticky="ew")
 
+    path_1=None
     update_position()
     list_coord = [(ltlng[0],ltlng[1])]
-    path_1=None
-
+    
     #Création de la carte et placement sur la frame, réglages du menu click droit et 
     map_widget = tkm.TkinterMapView(frame_latlng,width=400,height=500,corner_radius=0)
     map_widget.set_position(ltlng[0],ltlng[1],marker=True)
     map_widget.set_zoom(15)
     map_widget.add_right_click_menu_command(label="Ajouter position",command=add_marker_path,pass_coords=True,)
-    map_widget.add_right_click_menu_command(label= "Supprimer position(s)",command=map_widget.delete_all_marker)
+    map_widget.add_right_click_menu_command(label= "Supprimer position(s)",command=delete_marker)
     map_widget.add_right_click_menu_command(label="Suppimer chemin(s)",command=map_widget.delete_all_path)
     map_widget.add_right_click_menu_command(label="Distance 2 derniers points",command=display_distance)
     map_widget.add_left_click_map_command(left_click_event)
