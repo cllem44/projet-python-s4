@@ -4,8 +4,8 @@ from PIL import Image
 import PIL.Image as PilImage
 import os
 import screen_brightness_control as sbc
-# Changement fond d'ecran / Changement orga appli 
 
+# ------- Variables utiles pour gérer des changements dans le fichier main (c'est les fonctions qui sont utiles dans les faits mais elles restent utiles tout de même) ------
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 label_ecran1 = None
 label_ecran2 = None
@@ -57,6 +57,8 @@ COULEURS = {
 def init_ecran_accueil(ecran):
     global ecran_accueil
     ecran_accueil = ecran
+
+# -------- FONCTION PRINCIPALE ---------
 def creer_parametre(app):
     etat= {"ecran_selectionne": None}
     def charger_image(url):
@@ -227,7 +229,6 @@ def creer_parametre(app):
     frame_parametre_general.grid_columnconfigure(0, weight=1)
     frame_parametre_general.grid_rowconfigure(0,weight=1)
     frame_parametre_general.grid_rowconfigure(1,weight=0)
-    #frame_parametre_general.grid_remove()
 
     frame_haut = Frame(frame_parametre_general, background="#000000")
     frame_haut.grid(row=0, column=0, sticky="nsew")
@@ -245,12 +246,12 @@ def creer_parametre(app):
 
     
 
-    # --------Scrollbar---------------
+    # --------SCROLLBAR---------------
     frame_option = ctk.CTkScrollableFrame(frame_haut, width=120, fg_color="#898989", scrollbar_button_color="#898989", scrollbar_button_hover_color="#707070")
     frame_option.grid(row=0, column=0, sticky="nsew")
 
 
-    # ----------Boutons Options ------------
+    # ----------BUTTONS OPTIONS ------------
     options = ["Fond d'ecrans","Economiseur","Volume","Luminosite","Couleur Barre","Écran d'accueil"]
     frame_option.grid_columnconfigure(0,weight=1)
     for i,option in enumerate(options):

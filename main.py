@@ -96,32 +96,32 @@ def setup_fond(frame, chemin):
     label.place(relwidth=1, relheight=1)
     return label
 
-# customtkinter
+# ----- CUSTOMTKINTER ------
 app = ctk.CTk()
 app.title("Prototype")
 app.geometry("400x700")
 app.iconbitmap("img/logo.ico")
 app.resizable(width=False,height=False)
-app.grid_rowconfigure(0, weight=1)  # écran principal
-app.grid_rowconfigure(1, weight=0)  # barre du bas
+app.grid_rowconfigure(0, weight=1)  
+app.grid_rowconfigure(1, weight=0)  
 app.grid_columnconfigure(0, weight=1)
 
-# Délai
+# ------ DELAI ------
 init_economiseur(set_delai)
 app.bind_all("<Any-KeyPress>", reinitialiser_timer)
 app.bind_all("<Any-Button>", reinitialiser_timer)
 app.bind_all("<Motion>", reinitialiser_timer)
 reinitialiser_timer()
 
-# Volume depuis parametre
+# ------ VOLUME DEPUIS PARAMETRE -------
 init_volume(diminuerson, augmenterson)
 
-# FRAMES 
+# ------ FRAMES -------
 frame_ecran1, frame_ecran2, frame_verrouille, frame_barre = creer_frames(app)
 setup_frames(frame_barre,eteindretelephone,diminuerson,augmenterson,ecranaccueil)
 afficher_ecran(frame_ecran2,frame_ecran1)
 
-# Fond d'écrans
+# ------- FOND D'ECRAN -------
 label = setup_fond(frame_ecran1,"img/fondecran/ecran1.png")
 label2 = setup_fond(frame_ecran2,"img/fondecran/ecran2.png")
 init_frames(label,label2)
@@ -134,8 +134,8 @@ label2.bind("<ButtonRelease-1>", finswipe)
 
 ecran_accueil_ref = frame_ecran1
 init_ecran_accueil(set_ecran_accueil)
-#Applications
 
+# -------- APPLICATIONS ------
 frame_meteo = creer_meteo(app)
 frame_meteo.grid_remove()
 
@@ -147,25 +147,25 @@ frame_horloge = creer_horloge(app)
 frame_horloge.grid_remove()
 
 app_horloge = charger_image("img/app_horloge.png")
-placer_app(frame_ecran1, app_horloge, lambda: afficher_ecran(frame_actif, frame_horloge), 1, 0)
+placer_app(frame_ecran1, app_horloge, lambda: afficher_ecran(frame_actif, frame_horloge), 0, 2)
 
 frame_music = creer_music(app)
 frame_music.grid_remove()
 
 app_musique = charger_image("img/app_musique.png")
-placer_app(frame_ecran1, app_musique, lambda: afficher_ecran(frame_actif, frame_music), 2, 0)
+placer_app(frame_ecran2, app_musique, lambda: afficher_ecran(frame_actif, frame_music), 0, 2)
 
 frame_bloc_notes = creer_bloc_notes(app)
 frame_bloc_notes.grid_remove()
 
 app_bloc_notes = charger_image("img/app_bloc_note.png")
-placer_app(frame_ecran1, app_bloc_notes, lambda: afficher_ecran(frame_actif, frame_bloc_notes), 2, 1)
+placer_app(frame_ecran1, app_bloc_notes, lambda: afficher_ecran(frame_actif, frame_bloc_notes), 1, 0)
 
 frame_bataille_navale= bataille_navale(app)
 frame_bataille_navale.grid_remove()
 
 app_bataille_navale = charger_image("img/app_bataille_navale.png")
-placer_app(frame_ecran1, app_bataille_navale, lambda: afficher_ecran(frame_actif, frame_bataille_navale), 0, 2)
+placer_app(frame_ecran2, app_bataille_navale, lambda: afficher_ecran(frame_actif, frame_bataille_navale), 0, 1)
 
 frame_GPS = creer_map(app)
 frame_GPS.grid_remove()
@@ -177,7 +177,7 @@ frame_parametre = creer_parametre(app)
 frame_parametre.grid_remove()
 
 app_parametre = charger_image("img/app_parametre.png")
-placer_app(frame_ecran1,app_parametre, lambda: afficher_ecran(frame_actif, frame_parametre), 1, 1)
+placer_app(frame_ecran2,app_parametre, lambda: afficher_ecran(frame_actif, frame_parametre), 1, 0)
 
 frame_morpion = creer_morpion(app)
 frame_morpion.grid_remove()

@@ -6,6 +6,7 @@ from PIL import Image
 import os 
 import pyglet
 
+# -------- FONCTION PRINCIPALE ---------
 def creer_music (app):
     global musique_actuelle,musiques
     musiques = []
@@ -81,7 +82,7 @@ def creer_music (app):
         return image
 
 
-
+    # ------------FRAMES -------------
     frame_music_general = Frame(app, background="#000000")
     frame_music_general.grid(row=0, column=0, sticky="nsew")
     frame_music_general.grid_remove()
@@ -102,7 +103,7 @@ def creer_music (app):
     frame_barre.grid_propagate(False)
 
     
-
+   
     icone_play = charger_image("img/musique/play.png")
     icone_pause = charger_image("img/musique/pause.png")
     icone_sup = charger_image("img/musique/superieur.png")
@@ -117,6 +118,8 @@ def creer_music (app):
     choixdossier.grid(row=0,column=0,padx=0,pady=0)
     choixdossier.bind("<<ComboboxSelected>>",lambda e: charger_musique())
     
+    # ----- BUTTONS -----
+
     buttonplay = ctk.CTkButton(master=frame_btnmusique,image=icone_play,text="",command=play,width=50,height=50,fg_color="transparent",border_width=0,corner_radius=0,hover=False)
     buttonplay.grid(row=0,column=1,padx=0,pady=0,sticky="w")
     
