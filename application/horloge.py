@@ -5,6 +5,7 @@ from application.Timer_class import StopWatch
 from zoneinfo import ZoneInfo
 from datetime import datetime
 
+# -------- FONCTION PRINCIPALE ---------
 def creer_horloge(app):
     global frame_Data
     etat = {"timer_id": None}

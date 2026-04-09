@@ -17,9 +17,12 @@ def creer_map(app):
     def update_position():
         global ltlng        
         ltlng = get_position()
-
+        
+        
+     
         if ltlng is None:
             ltlng = (48.8566,2.3522)
+
             label_latitude.config(text=f'Votre latitude: {ltlng[0]}')
             label_longitude.config(text=f'Votre longitude: {ltlng[1]}')
         else:

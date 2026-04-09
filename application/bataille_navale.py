@@ -288,7 +288,20 @@ def bataille_navale(app):
         
 
     Frame_Princ = Frame(app,background="#000000")
-    Frame_Princ.grid(row=0,column=0)
+    Frame_Princ
+    Frame_Princ.grid_propagate(False)  
+    Frame_Princ.grid_rowconfigure(0, weight=1)
+    Frame_Princ.grid_rowconfigure(1, weight=1)
+    Frame_Princ.grid_rowconfigure(2, weight=1)
+    Frame_Princ.grid_rowconfigure(3, weight=1)
+    Frame_Princ.grid_rowconfigure(4, weight=1)
+    Frame_Princ.grid_rowconfigure(5, weight=1)
+    Frame_Princ.grid_rowconfigure(6, weight=1)
+    Frame_Princ.grid_rowconfigure(7, weight=1)
+    Frame_Princ.grid_rowconfigure(8, weight=1)
+    Frame_Princ.grid_columnconfigure(0, weight=1)
+    Frame_Princ.grid_columnconfigure(1, weight=1)
+    Frame_Princ.grid_columnconfigure(2, weight=1)
 
     Frame_Bienvenue = Frame(Frame_Princ,background="#000000")
     Frame_Bienvenue.grid(row=2,column=1)

@@ -1,5 +1,6 @@
 from tkinter import *
 
+# -------- FONCTION PRINCIPALE ---------
 def creer_morpion(app):
     def creergrille():
         can1.create_line(10,10,388,10)
