@@ -67,8 +67,8 @@ def creer_bloc_notes(app):
 
     frame_bloc_note = Frame(app, background="#962F2F")
     frame_bloc_note.grid(row=0, column=0, sticky="nsew")
-    frame_bloc_note.grid_columnconfigure(0, weight=1)  # colonne gauche (liste)
-    frame_bloc_note.grid_columnconfigure(1, weight=3)  # colonne droite (texte)
+    frame_bloc_note.grid_columnconfigure(0, weight=1)  
+    frame_bloc_note.grid_columnconfigure(1, weight=3)  
     frame_bloc_note.grid_rowconfigure(2, weight=1)
 
     # ── Colonne gauche : création + liste ──────────────────────────────────────
@@ -107,8 +107,7 @@ def creer_bloc_notes(app):
                           bg="#4a0f0f", fg="white", relief="flat")
     bouton_suppr.grid(row=0, column=1, sticky="ew", padx=(2, 0))
 
-    # ── Colonne droite : zone de texte ─────────────────────────────────────────
-
+    
     label_note_active = Label(frame_bloc_note, text="Aucune note ouverte",
                               bg="#962F2F", fg="white", font=("Arial", 10, "italic"))
     label_note_active.grid(column=1, row=0, sticky="w", padx=(0, 10), pady=(10, 0))
@@ -126,8 +125,7 @@ def creer_bloc_notes(app):
     zone_texte.grid(row=0, column=0, sticky="nsew")
     scroll_v.config(command=zone_texte.yview)
 
-    # ── État ───────────────────────────────────────────────────────────────────
-
+    
     note_ouverte = StringVar(value="")
     maj_liste_notes()
 

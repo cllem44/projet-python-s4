@@ -17,6 +17,7 @@ def creer_map(app):
     def update_position():
         global ltlng        
         ltlng = get_position()
+
         if ltlng is None:
             ltlng = (48.8566,2.3522)
             label_latitude.config(text=f'Votre latitude: {ltlng[0]}')
@@ -24,6 +25,7 @@ def creer_map(app):
         else:
             label_latitude.config(text=f'Votre latitude: {ltlng[0]}')
             label_longitude.config(text=f'Votre longitude: {ltlng[1]}')
+        
         app.after(60000,update_position)
 
     #Permet de calculer la distance entre les deux derniers points placés grâce à la loi des sinus
